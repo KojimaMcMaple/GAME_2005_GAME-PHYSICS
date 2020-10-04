@@ -19,8 +19,7 @@ void PlayScene::update()
 {
 	updateDisplayList();
 
-	float distance_player_enemy = m_pPlayer->checkDistance(m_pEnemy);
-
+	float distance_player_enemy = m_pPlayer->GetDistance(m_pEnemy);
 	if (distance_player_enemy > (m_pPlayer->getWidth() / 2 + m_pEnemy->getWidth() / 2)) {
 		m_pDistanceLabel->setText("Distance = " + std::to_string(distance_player_enemy));
 	}
@@ -28,6 +27,8 @@ void PlayScene::update()
 		m_pDistanceLabel->setText("HIT!!!");
 	}
 	
+	float player_magnitude = Util::magnitude(m_pPlayer->getRigidBody()->velocity);
+	m_pMagnitudeLabel->setText("Velo Magnitude = " + std::to_string(player_magnitude));
 }
 
 void PlayScene::clean()
@@ -47,7 +48,11 @@ void PlayScene::handleEvents()
 	{
 		m_pPlayer->moveRight();
 	}
-	else if (EventManager::Instance().isKeyDown(SDL_SCANCODE_W))
+	else {
+		m_pPlayer->StopMovingX();
+	}
+
+	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_W))
 	{
 		m_pPlayer->moveUp();
 	}
@@ -56,7 +61,7 @@ void PlayScene::handleEvents()
 		m_pPlayer->moveDown();
 	}
 	else {
-		m_pPlayer->StopMoving();
+		m_pPlayer->StopMovingY();
 	}
 	
 
@@ -76,9 +81,12 @@ void PlayScene::start()
 	m_pEnemy = new Enemy();
 	addChild(m_pEnemy);
 
-	// Label
+	// Labels
 	const SDL_Color blue = { 0, 0, 255, 255 };
 	m_pDistanceLabel = new Label("Distance", "Consolas", 40, blue, glm::vec2(400.0f, 40.0f));
 	m_pDistanceLabel->setParent(this);
 	addChild(m_pDistanceLabel);
+	m_pMagnitudeLabel = new Label("VeloMag", "Consolas", 40, blue, glm::vec2(400.0f, 80.0f));
+	m_pMagnitudeLabel->setParent(this);
+	addChild(m_pMagnitudeLabel);
 }

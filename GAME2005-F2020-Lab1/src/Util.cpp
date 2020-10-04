@@ -80,7 +80,7 @@ float Util::squaredDistance(const glm::vec2 vecA, const glm::vec2 vecB)
 */
 float Util::magnitude(const glm::vec2 vec)
 {
-	return 0;
+	return sqrt(pow(vec.x, 2) + pow(vec.y, 2));
 }
 
 /**
@@ -239,7 +239,7 @@ glm::vec2 Util::inverse(const glm::vec2 vec)
 */
 glm::vec2 Util::normalize(const glm::vec2 vec)
 {
-	glm::vec2 dest;
+	/*glm::vec2 dest;
 	auto x = vec.x;
 	auto y = vec.y;
 	auto length = (x * x) + (y * y);
@@ -248,7 +248,9 @@ glm::vec2 Util::normalize(const glm::vec2 vec)
 		dest.x = vec.x * length;
 		dest.y = vec.y * length;
 	}
-	return dest;
+	return dest;*/
+
+	return vec * (1.0f / magnitude(vec));
 }
 
 /**

@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Button.h"
 #include "Enemy.h"
+#include "Util.h"
 
 class PlayScene : public Scene
 {
@@ -27,6 +28,7 @@ private:
 	Player* m_pPlayer;
 	Enemy* m_pEnemy;
 	Label* m_pDistanceLabel;
+	Label* m_pMagnitudeLabel;
 
 	Button* m_pBackButton;
 	Button* m_pNextButton;
