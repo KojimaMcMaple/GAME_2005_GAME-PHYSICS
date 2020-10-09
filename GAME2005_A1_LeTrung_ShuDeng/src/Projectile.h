@@ -15,6 +15,8 @@ public:
 	virtual void update() override;
 	virtual void clean() override;
 
+	void StartThrow(float velo, float angle);
+
 	void SetThrowAngle(float angle);
 	void SetInitialVelocity(float velo);
 private:

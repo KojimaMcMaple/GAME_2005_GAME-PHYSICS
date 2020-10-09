@@ -56,6 +56,14 @@ void Projectile::clean()
 {
 }
 
+void Projectile::StartThrow(float velo, float angle)
+{
+	SetInitialVelocity(velo);
+	SetThrowAngle(angle);
+	setEnabled(true);
+	//start ticks
+}
+
 void Projectile::SetThrowAngle(float angle)
 {
 	throw_angle = angle;
