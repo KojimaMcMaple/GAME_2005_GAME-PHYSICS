@@ -14,8 +14,12 @@ public:
 	virtual void draw() override;
 	virtual void update() override;
 	virtual void clean() override;
+
+	void SetThrowAngle(float angle);
+	void SetInitialVelocity(float velo);
 private:
 	float throw_angle;
 	float travel_time;
+	float initial_velocity;
 };
 

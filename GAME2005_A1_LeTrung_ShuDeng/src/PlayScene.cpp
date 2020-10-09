@@ -132,6 +132,10 @@ void PlayScene::start()
 	addChild(m_pPlayer);
 	m_playerFacingRight = true;
 
+	// Projectile Sprite
+	m_pProjectile = new Projectile();
+	addChild(m_pProjectile);
+
 	// Back Button
 	m_pBackButton = new Button("../Assets/textures/backButton.png", "backButton", BACK_BUTTON);
 	m_pBackButton->getTransform()->position = glm::vec2(300.0f, 400.0f);
@@ -179,6 +183,10 @@ void PlayScene::start()
 
 	addChild(m_pInstructionsLabel);
 
+	// TESTING
+	m_pProjectile->setEnabled(true);
+	m_pProjectile->SetInitialVelocity(95.0f);
+	m_pProjectile->SetThrowAngle(15.89f);
 
 }
 

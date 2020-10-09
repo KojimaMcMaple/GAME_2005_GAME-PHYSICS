@@ -6,6 +6,7 @@
 #include "Background.h"
 #include "Plane.h"
 #include "Player.h"
+#include "Projectile.h"
 #include "Button.h"
 #include "Label.h"
 
@@ -31,6 +32,7 @@ private:
 	Background* bkg_texture;
 	Plane* m_pPlaneSprite;
 	Player* m_pPlayer;
+	Projectile* m_pProjectile;
 	bool m_playerFacingRight;
 
 	// UI Items
