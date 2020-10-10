@@ -185,8 +185,9 @@ void PlayScene::start()
 
 	// TESTING
 	m_pProjectile->setEnabled(true);
-	m_pProjectile->SetInitialVelocity(95.0f);
-	m_pProjectile->SetThrowAngle(15.89f);
+	/*m_pProjectile->SetInitialVelocity(95.0f);
+	m_pProjectile->SetThrowAngle(15.89f);*/
+	m_pProjectile->StartThrow(95.0f, 15.89f);
 
 }
 

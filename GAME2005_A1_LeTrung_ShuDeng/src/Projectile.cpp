@@ -33,23 +33,18 @@ void Projectile::draw()
 void Projectile::update()
 {
 	if (isEnabled()) {
-		glm::vec2 velo = getRigidBody()->velocity;
-		glm::vec2 pos = getTransform()->position;
-		velo.x = initial_velocity * cos(throw_angle * Globals::sPi / 180.0f);
-		velo.y = -initial_velocity * sin(throw_angle * Globals::sPi / 180.0f);
 
-		cout << "velo.x = " << velo.x << endl;
-		cout << "velo.y = " << velo.y << endl;
+		getRigidBody()->velocity += getRigidBody()->acceleration * Globals::sDeltaTime;
 
-		pos.x += velo.x * Globals::sDeltaTime;
-		pos.y += velo.y * Globals::sDeltaTime;
+		cout << "velo.x = " << getRigidBody()->velocity.x << endl;
+		cout << "velo.y = " << getRigidBody()->velocity.y << endl;
 
-		cout << "pos.x = " << pos.x << endl;
-		cout << "pos.y = " << pos.y << endl;
+		getTransform()->position += getRigidBody()->velocity * Globals::sDeltaTime;
 
-		getTransform()->position = pos;
+		cout << "pos.x = " << getTransform()->position.x << endl;
+		cout << "pos.y = " << getTransform()->position.y << endl;
+
 	}
-
 }
 
 void Projectile::clean()
@@ -62,6 +57,10 @@ void Projectile::StartThrow(float velo, float angle)
 	SetThrowAngle(angle);
 	setEnabled(true);
 	//start ticks
+
+	getRigidBody()->velocity.x = initial_velocity * cos(throw_angle * Globals::sPi / 180.0f);
+	getRigidBody()->velocity.y = -initial_velocity * sin(throw_angle * Globals::sPi / 180.0f);
+	getRigidBody()->acceleration = glm::vec2(0.0f, 9.8);
 }
 
 void Projectile::SetThrowAngle(float angle)
