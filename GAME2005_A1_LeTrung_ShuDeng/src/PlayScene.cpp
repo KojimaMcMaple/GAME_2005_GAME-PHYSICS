@@ -133,6 +133,10 @@ void PlayScene::start()
 	m_pPlayer = new Player();
 	addChild(m_pPlayer);
 	m_playerFacingRight = true;
+	
+	// Target Sprite
+	m_pTarget = new Target(glm::vec2(target_range + m_pPlayer->getTransform()->position.x, m_pPlayer->getTransform()->position.y));
+	addChild(m_pTarget);
 
 	// Projectile Sprite
 	m_pProjectile = new Projectile(m_pPlayer->getTransform()->position);
@@ -140,7 +144,7 @@ void PlayScene::start()
 
 	// Back Button
 	m_pBackButton = new Button("../Assets/textures/backButton.png", "backButton", BACK_BUTTON);
-	m_pBackButton->getTransform()->position = glm::vec2(300.0f, 400.0f);
+	m_pBackButton->getTransform()->position = glm::vec2(100.0f, 550.0f);
 	m_pBackButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pBackButton->setActive(false);
@@ -160,7 +164,7 @@ void PlayScene::start()
 
 	// Next Button
 	m_pNextButton = new Button("../Assets/textures/nextButton.png", "nextButton", NEXT_BUTTON);
-	m_pNextButton->getTransform()->position = glm::vec2(500.0f, 400.0f);
+	m_pNextButton->getTransform()->position = glm::vec2(700.0f, 550.0f);
 	m_pNextButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pNextButton->setActive(false);
@@ -188,11 +192,17 @@ void PlayScene::start()
 	addChild(m_pInstructionsLabel);
 }
 
+void PlayScene::UpdateTargetRange(float new_range)
+{
+	target_range = new_range;
+	m_pTarget->getTransform()->position.x = new_range;
+}
+
 void PlayScene::StartSimulation() {
 	/*m_pProjectile->SetInitialVelocity(95.0f);
 	m_pProjectile->SetThrowAngle(15.89f);*/
 	m_pProjectile->getTransform()->position = m_pPlayer->getTransform()->position;
-	m_pProjectile->StartThrow(95.0f, 15.89f);
+	m_pProjectile->StartThrow(throw_velocity, m_pTarget->getTransform()->position.x);
 }
 
 void PlayScene::GUI_Function()
@@ -205,16 +215,18 @@ void PlayScene::GUI_Function()
 	
 	ImGui::Begin("Simulation Controls", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar);
 
-	static float target_range_slider[1] = { 485.0f };
-	if (ImGui::SliderFloat("Target range", target_range_slider, 0.0f, 920.918f)) {
-
+	static float target_range_slider[1] = { target_range };
+	if (ImGui::SliderFloat("Target range", target_range_slider, 50.0f, 800.0f)) {
+		UpdateTargetRange(target_range_slider[0]);
 	}
 
-	if(ImGui::Button("PLAY"))
+	if(ImGui::Button("Start Simulation"))
 	{
-		std::cout << "PLAY Pressed" << std::endl;
+		std::cout << "Start Simulation Pressed" << std::endl;
 		StartSimulation();
 	}
+	
+
 
 	ImGui::Separator();
 

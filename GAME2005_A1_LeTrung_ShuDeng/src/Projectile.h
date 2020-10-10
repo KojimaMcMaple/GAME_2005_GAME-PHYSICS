@@ -17,12 +17,13 @@ public:
 	virtual void clean() override;
 
 	void StartThrow(float velo, float angle);
-
+	void CalculateThrowAngle(float velo, float range);
 	void SetThrowAngle(float angle);
 	void SetInitialVelocity(float velo);
 private:
 	float throw_angle;
 	float travel_time;
 	float initial_velocity;
+	float target_range;
 };
 

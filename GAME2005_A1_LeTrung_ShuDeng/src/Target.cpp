@@ -16,6 +16,12 @@ Target::Target()
 	setType(TARGET);
 }
 
+Target::Target(glm::vec2 pos)
+{
+	Target();
+	getTransform()->position = pos;
+}
+
 Target::~Target()
 = default;
 

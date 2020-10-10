@@ -60,16 +60,22 @@ void Projectile::clean()
 
 }
 
-void Projectile::StartThrow(float velo, float angle)
+void Projectile::StartThrow(float velo, float range)
 {
 	SetInitialVelocity(velo);
-	SetThrowAngle(angle);
+	CalculateThrowAngle(velo, range);
 	setEnabled(true);
 	//start ticks
 
 	getRigidBody()->velocity.x = initial_velocity * cos(throw_angle * Globals::sPi / 180.0f);
 	getRigidBody()->velocity.y = -initial_velocity * sin(throw_angle * Globals::sPi / 180.0f);
 	getRigidBody()->acceleration = glm::vec2(0.0f, 9.8);
+}
+
+void Projectile::CalculateThrowAngle(float velo, float range)
+{
+	SetThrowAngle((asin(range * Globals::sGravity / (velo * velo)) / 2) * 180.0f / Globals::sPi);
+	cout << "throw_angle = " << throw_angle;
 }
 
 void Projectile::SetThrowAngle(float angle)

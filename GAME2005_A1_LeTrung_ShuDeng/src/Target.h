@@ -7,6 +7,7 @@
 class Target final : public DisplayObject {
 public:
 	Target();
+	Target(glm::vec2 pos);
 	~Target();
 
 	// Inherited via GameObject

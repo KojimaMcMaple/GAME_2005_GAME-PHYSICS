@@ -6,6 +6,7 @@
 #include "Background.h"
 #include "Plane.h"
 #include "Player.h"
+#include "Target.h"
 #include "Projectile.h"
 #include "Button.h"
 #include "Label.h"
@@ -23,6 +24,7 @@ public:
 	virtual void handleEvents() override;
 	virtual void start() override;
 
+	void UpdateTargetRange(float new_range);
 	void StartSimulation();
 private:
 	// IMGUI Function
@@ -34,6 +36,7 @@ private:
 	Background* bkg_texture;
 	Plane* m_pPlaneSprite;
 	Player* m_pPlayer;
+	Target* m_pTarget;
 	Projectile* m_pProjectile;
 	bool m_playerFacingRight;
 
@@ -41,6 +44,11 @@ private:
 	Button* m_pBackButton;
 	Button* m_pNextButton;
 	Label* m_pInstructionsLabel;
+
+	// PHYSICS VARS
+	float target_range = 485.0f;
+	float throw_velocity = 95.0f;
+
 };
 
 #endif /* defined (__PLAY_SCENE__) */
