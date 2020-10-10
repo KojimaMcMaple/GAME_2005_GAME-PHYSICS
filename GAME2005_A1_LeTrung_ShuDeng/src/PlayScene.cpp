@@ -33,16 +33,14 @@ void PlayScene::update()
 {
 	updateDisplayList();
 
-<<<<<<< HEAD
 	angle_label->setText("Angle = " + std::to_string(m_pProjectile->GetThrowAngle()));
 	velocity_x_label->setText("Velo X = " + std::to_string(m_pProjectile->getRigidBody()->velocity.x));
 	velocity_y_label->setText("Velo Y = " + std::to_string(m_pProjectile->getRigidBody()->velocity.y));
-=======
+
 	if (CollisionManager::AABBCheck(m_pProjectile, m_pTarget))
 	{
 		m_pProjectile->Stop();
 	}
->>>>>>> deeaac4088c7bdc3cd068a5ff5a5f30157877a7c
 }
 
 void PlayScene::clean()

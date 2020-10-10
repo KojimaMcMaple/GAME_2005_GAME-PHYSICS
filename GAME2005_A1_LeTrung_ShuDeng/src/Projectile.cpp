@@ -18,24 +18,6 @@ Projectile::Projectile(glm::vec2 pos = glm::vec2(0.0f, 400.0f))
 	setEnabled(false);
 }
 
-<<<<<<< HEAD
-Projectile::Projectile(glm::vec2 pos)
-{
-	TextureManager::Instance()->load("../Assets/textures/planet.png", "nade");
-
-	const auto size = TextureManager::Instance()->getTextureSize("nade");
-	setWidth(size.x);
-	setHeight(size.y);
-
-	getTransform()->position = pos;
-	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
-	getRigidBody()->isColliding = false;
-	setType(PROJECTILE);
-	setEnabled(false);
-}
-
-=======
->>>>>>> deeaac4088c7bdc3cd068a5ff5a5f30157877a7c
 Projectile::~Projectile() = default;
 
 void Projectile::draw()
