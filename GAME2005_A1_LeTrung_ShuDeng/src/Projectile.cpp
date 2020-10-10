@@ -28,12 +28,14 @@ Projectile::~Projectile() = default;
 
 void Projectile::draw()
 {
-	// alias for x and y
-	const auto x = getTransform()->position.x;
-	const auto y = getTransform()->position.y;
+	if (isEnabled()) {
+		// alias for x and y
+		const auto x = getTransform()->position.x;
+		const auto y = getTransform()->position.y;
 
-	// draw the target
-	TextureManager::Instance()->draw("nade", x, y, 0, 255, false);
+		// draw the target
+		TextureManager::Instance()->draw("nade", x, y, 0, 255, false);
+	}
 }
 
 void Projectile::update()
