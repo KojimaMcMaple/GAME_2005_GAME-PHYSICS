@@ -31,7 +31,7 @@ Player::Player(): m_currentAnimationState(PLAYER_IDLE_RIGHT)
 	const auto size = TextureManager::Instance()->getTextureSize("wookiee");
 	setWidth(size.x);
 	setHeight(size.y);
-	getTransform()->position = glm::vec2(100.0f, 100.0f);
+	getTransform()->position = glm::vec2(50.0f, 400.0f);
 	getRigidBody()->velocity = glm::vec2(0, 0);
 	getRigidBody()->isColliding = false;
 

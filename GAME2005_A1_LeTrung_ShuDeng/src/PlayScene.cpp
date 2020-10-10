@@ -138,10 +138,6 @@ void PlayScene::start()
 	m_pTarget = new Target(glm::vec2(target_range + m_pPlayer->getTransform()->position.x, m_pPlayer->getTransform()->position.y));
 	addChild(m_pTarget);
 
-	// Target Sprite
-	m_pTarget = new Target();
-	addChild(m_pTarget);
-
 	// Projectile Sprite
 	m_pProjectile = new Projectile(m_pPlayer->getTransform()->position);
 	addChild(m_pProjectile);
