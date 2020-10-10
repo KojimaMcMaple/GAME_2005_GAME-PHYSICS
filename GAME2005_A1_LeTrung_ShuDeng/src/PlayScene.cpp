@@ -181,15 +181,17 @@ void PlayScene::start()
 
 	/* Instructions Label */
 	m_pInstructionsLabel = new Label("Press the backtick (`) character to toggle Debug View", "Consolas");
+	SDL_Color color = { 255, 255, 255 };
+	m_pInstructionsLabel->setColour(color);
 	m_pInstructionsLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.5f, 500.0f);
 
 	addChild(m_pInstructionsLabel);
 }
 
 void PlayScene::StartSimulation() {
-	m_pProjectile->setEnabled(true);
 	/*m_pProjectile->SetInitialVelocity(95.0f);
 	m_pProjectile->SetThrowAngle(15.89f);*/
+	m_pProjectile->getTransform()->position = m_pPlayer->getTransform()->position;
 	m_pProjectile->StartThrow(95.0f, 15.89f);
 }
 
@@ -203,6 +205,11 @@ void PlayScene::GUI_Function()
 	
 	ImGui::Begin("Simulation Controls", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar);
 
+	static float target_range_slider[1] = { 485.0f };
+	if (ImGui::SliderFloat("Target range", target_range_slider, 0.0f, 920.918f)) {
+
+	}
+
 	if(ImGui::Button("PLAY"))
 	{
 		std::cout << "PLAY Pressed" << std::endl;
@@ -211,15 +218,17 @@ void PlayScene::GUI_Function()
 
 	ImGui::Separator();
 
-	static float float3[3] = { 0.0f, 1.0f, 1.5f };
+	/*static float float3[3] = { 0.0f, 1.0f, 1.5f };
 	if(ImGui::SliderFloat3("My Slider", float3, 0.0f, 2.0f))
 	{
 		std::cout << float3[0] << std::endl;
 		std::cout << float3[1] << std::endl;
 		std::cout << float3[2] << std::endl;
 		std::cout << "---------------------------\n";
-	}
+	}*/
 	
+
+
 	ImGui::End();
 
 	// Don't Remove this
