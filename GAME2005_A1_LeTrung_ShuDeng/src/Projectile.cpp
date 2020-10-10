@@ -3,7 +3,7 @@ using namespace std;
 
 #include "Projectile.h"
 
-Projectile::Projectile()
+Projectile::Projectile(glm::vec2 pos = glm::vec2(0.0f, 400.0f))
 {
 	TextureManager::Instance()->load("../Assets/textures/planet.png", "nade");
 
@@ -11,17 +11,11 @@ Projectile::Projectile()
 	setWidth(size.x);
 	setHeight(size.y);
 
-	getTransform()->position = glm::vec2(0.0f, 400.0f);
+	getTransform()->position = pos;
 	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->isColliding = false;
 	setType(PROJECTILE);
 	setEnabled(false);
-}
-
-Projectile::Projectile(glm::vec2 pos)
-{
-	Projectile();
-	getTransform()->position = pos;
 }
 
 Projectile::~Projectile() = default;
@@ -51,7 +45,6 @@ void Projectile::update()
 
 		/*cout << "pos.x = " << getTransform()->position.x << endl;
 		cout << "pos.y = " << getTransform()->position.y << endl;*/
-
 	}
 }
 
@@ -70,6 +63,12 @@ void Projectile::StartThrow(float velo, float range)
 	getRigidBody()->velocity.x = initial_velocity * cos(throw_angle * Globals::sPi / 180.0f);
 	getRigidBody()->velocity.y = -initial_velocity * sin(throw_angle * Globals::sPi / 180.0f);
 	getRigidBody()->acceleration = glm::vec2(0.0f, 9.8);
+}
+
+void Projectile::Stop()
+{
+	getRigidBody()->acceleration = glm::vec2(0.0f);
+	getRigidBody()->velocity = glm::vec2(0.0f);
 }
 
 void Projectile::CalculateThrowAngle(float velo, float range)

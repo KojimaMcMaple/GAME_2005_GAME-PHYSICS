@@ -31,6 +31,11 @@ void PlayScene::draw()
 void PlayScene::update()
 {
 	updateDisplayList();
+
+	if (CollisionManager::AABBCheck(m_pProjectile, m_pTarget))
+	{
+		m_pProjectile->Stop();
+	}
 }
 
 void PlayScene::clean()
