@@ -17,12 +17,14 @@ PlayScene::~PlayScene()
 
 void PlayScene::draw()
 {
+	drawDisplayList();
+
 	if(EventManager::Instance().isIMGUIActive())
 	{
 		GUI_Function();
 	}
 
-	drawDisplayList();
+	
 	SDL_SetRenderDrawColor(Renderer::Instance()->getRenderer(), 255, 255, 255, 255);
 }
 
@@ -123,9 +125,9 @@ void PlayScene::start()
 	bkg_texture = new Background();
 	addChild(bkg_texture);
 
-	// Plane Sprite
-	m_pPlaneSprite = new Plane();
-	addChild(m_pPlaneSprite);
+	//// Plane Sprite
+	//m_pPlaneSprite = new Plane();
+	//addChild(m_pPlaneSprite);
 
 	// Player Sprite
 	m_pPlayer = new Player();
@@ -133,7 +135,7 @@ void PlayScene::start()
 	m_playerFacingRight = true;
 
 	// Projectile Sprite
-	m_pProjectile = new Projectile();
+	m_pProjectile = new Projectile(m_pPlayer->getTransform()->position);
 	addChild(m_pProjectile);
 
 	// Back Button
@@ -182,16 +184,16 @@ void PlayScene::start()
 	m_pInstructionsLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.5f, 500.0f);
 
 	addChild(m_pInstructionsLabel);
+}
 
-	// TESTING
+void PlayScene::StartSimulation() {
 	m_pProjectile->setEnabled(true);
 	/*m_pProjectile->SetInitialVelocity(95.0f);
 	m_pProjectile->SetThrowAngle(15.89f);*/
 	m_pProjectile->StartThrow(95.0f, 15.89f);
-
 }
 
-void PlayScene::GUI_Function() const
+void PlayScene::GUI_Function()
 {
 	// Always open with a NewFrame
 	ImGui::NewFrame();
@@ -204,6 +206,7 @@ void PlayScene::GUI_Function() const
 	if(ImGui::Button("PLAY"))
 	{
 		std::cout << "PLAY Pressed" << std::endl;
+		StartSimulation();
 	}
 
 	ImGui::Separator();

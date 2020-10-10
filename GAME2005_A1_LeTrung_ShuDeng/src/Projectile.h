@@ -8,6 +8,7 @@ class Projectile : public DisplayObject
 {
 public:
 	Projectile();
+	Projectile(glm::vec2 pos);
 	~Projectile();
 
 	// Life Cycle Methods

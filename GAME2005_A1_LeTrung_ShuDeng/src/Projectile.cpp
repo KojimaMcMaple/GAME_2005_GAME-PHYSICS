@@ -15,7 +15,13 @@ Projectile::Projectile()
 	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->isColliding = false;
 	setType(PROJECTILE);
-	setEnabled(true);
+	setEnabled(false);
+}
+
+Projectile::Projectile(glm::vec2 pos)
+{
+	Projectile();
+	getTransform()->position = pos;
 }
 
 Projectile::~Projectile() = default;
@@ -36,19 +42,20 @@ void Projectile::update()
 
 		getRigidBody()->velocity += getRigidBody()->acceleration * Globals::sDeltaTime;
 
-		cout << "velo.x = " << getRigidBody()->velocity.x << endl;
-		cout << "velo.y = " << getRigidBody()->velocity.y << endl;
+		/*cout << "velo.x = " << getRigidBody()->velocity.x << endl;
+		cout << "velo.y = " << getRigidBody()->velocity.y << endl;*/
 
 		getTransform()->position += getRigidBody()->velocity * Globals::sDeltaTime;
 
-		cout << "pos.x = " << getTransform()->position.x << endl;
-		cout << "pos.y = " << getTransform()->position.y << endl;
+		/*cout << "pos.x = " << getTransform()->position.x << endl;
+		cout << "pos.y = " << getTransform()->position.y << endl;*/
 
 	}
 }
 
 void Projectile::clean()
 {
+
 }
 
 void Projectile::StartThrow(float velo, float angle)
