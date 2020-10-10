@@ -20,8 +20,17 @@ Projectile::Projectile()
 
 Projectile::Projectile(glm::vec2 pos)
 {
-	Projectile();
+	TextureManager::Instance()->load("../Assets/textures/planet.png", "nade");
+
+	const auto size = TextureManager::Instance()->getTextureSize("nade");
+	setWidth(size.x);
+	setHeight(size.y);
+
 	getTransform()->position = pos;
+	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
+	getRigidBody()->isColliding = false;
+	setType(PROJECTILE);
+	setEnabled(false);
 }
 
 Projectile::~Projectile() = default;
@@ -75,7 +84,7 @@ void Projectile::StartThrow(float velo, float range)
 void Projectile::CalculateThrowAngle(float velo, float range)
 {
 	SetThrowAngle((asin(range * Globals::sGravity / (velo * velo)) / 2) * 180.0f / Globals::sPi);
-	cout << "throw_angle = " << throw_angle;
+	//cout << "throw_angle = " << throw_angle;
 }
 
 void Projectile::SetThrowAngle(float angle)
@@ -86,4 +95,9 @@ void Projectile::SetThrowAngle(float angle)
 void Projectile::SetInitialVelocity(float velo)
 {
 	initial_velocity = velo;
+}
+
+float Projectile::GetThrowAngle()
+{
+	return throw_angle;
 }

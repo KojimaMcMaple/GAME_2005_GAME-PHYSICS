@@ -18,8 +18,16 @@ Target::Target()
 
 Target::Target(glm::vec2 pos)
 {
-	Target();
+	TextureManager::Instance()->load("../Assets/textures/stormtrooper.png", "stormtrooper");
+
+	const auto size = TextureManager::Instance()->getTextureSize("stormtrooper");
+	setWidth(size.x);
+	setHeight(size.y);
 	getTransform()->position = pos;
+	getRigidBody()->velocity = glm::vec2(0, 0);
+	getRigidBody()->isColliding = false;
+
+	setType(TARGET);
 }
 
 Target::~Target()

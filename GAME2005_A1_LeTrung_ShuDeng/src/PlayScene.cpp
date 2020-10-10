@@ -1,6 +1,7 @@
 #include "PlayScene.h"
 #include "Game.h"
 #include "EventManager.h"
+#include "Util.h"
 
 // required for IMGUI
 #include "imgui.h"
@@ -31,6 +32,10 @@ void PlayScene::draw()
 void PlayScene::update()
 {
 	updateDisplayList();
+
+	angle_label->setText("Angle = " + std::to_string(m_pProjectile->GetThrowAngle()));
+	velocity_x_label->setText("Velo X = " + std::to_string(m_pProjectile->getRigidBody()->velocity.x));
+	velocity_y_label->setText("Velo Y = " + std::to_string(m_pProjectile->getRigidBody()->velocity.y));
 }
 
 void PlayScene::clean()
@@ -183,19 +188,34 @@ void PlayScene::start()
 
 	addChild(m_pNextButton);
 
-	/* Instructions Label */
-	m_pInstructionsLabel = new Label("Press the backtick (`) character to toggle Debug View", "Consolas");
-	SDL_Color color = { 255, 255, 255 };
-	m_pInstructionsLabel->setColour(color);
+	// LABELS
+	const SDL_Color color = { 255, 255, 255, 255 };
+	m_pInstructionsLabel = new Label("Press the backtick (`) character to toggle Debug View", "Consolas", 20, color);
 	m_pInstructionsLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.5f, 500.0f);
-
 	addChild(m_pInstructionsLabel);
+
+	angle_label = new Label("Angle = ", "Consolas", 20, color);
+	angle_label->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.5f, 50.0f);
+	addChild(angle_label);
+
+	velocity_x_label = new Label("Velo X = ", "Consolas", 20, color);
+	velocity_x_label->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.5f, 75.0f);
+	addChild(velocity_x_label);
+
+	velocity_y_label = new Label("Velo Y = ", "Consolas", 20, color);
+	velocity_y_label->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.5f, 100.0f);
+	addChild(velocity_y_label);
 }
 
 void PlayScene::UpdateTargetRange(float new_range)
 {
 	target_range = new_range;
 	m_pTarget->getTransform()->position.x = new_range;
+}
+
+void PlayScene::UpdateThrowVelo(float new_velo)
+{
+	throw_velocity = new_velo;
 }
 
 void PlayScene::StartSimulation() {
@@ -216,8 +236,13 @@ void PlayScene::GUI_Function()
 	ImGui::Begin("Simulation Controls", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar);
 
 	static float target_range_slider[1] = { target_range };
-	if (ImGui::SliderFloat("Target range", target_range_slider, 50.0f, 800.0f)) {
+	if (ImGui::SliderFloat("Target Range", target_range_slider, 50.0f, 800.0f)) {
 		UpdateTargetRange(target_range_slider[0]);
+	}
+
+	static float throw_velocity_slider[1] = { throw_velocity };
+	if (ImGui::SliderFloat("Throw Velo", throw_velocity_slider, 0.0f, 100.0f)) {
+		UpdateThrowVelo(throw_velocity_slider[0]);
 	}
 
 	if(ImGui::Button("Start Simulation"))
@@ -225,8 +250,6 @@ void PlayScene::GUI_Function()
 		std::cout << "Start Simulation Pressed" << std::endl;
 		StartSimulation();
 	}
-	
-
 
 	ImGui::Separator();
 

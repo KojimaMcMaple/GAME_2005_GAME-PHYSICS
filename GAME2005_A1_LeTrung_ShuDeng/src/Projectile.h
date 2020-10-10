@@ -20,6 +20,7 @@ public:
 	void CalculateThrowAngle(float velo, float range);
 	void SetThrowAngle(float angle);
 	void SetInitialVelocity(float velo);
+	float GetThrowAngle();
 private:
 	float throw_angle;
 	float travel_time;

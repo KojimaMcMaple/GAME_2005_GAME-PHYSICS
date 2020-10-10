@@ -26,6 +26,7 @@ public:
 	virtual void start() override;
 
 	void UpdateTargetRange(float new_range);
+	void UpdateThrowVelo(float new_velo);
 	void StartSimulation();
 private:
 	// IMGUI Function
@@ -45,6 +46,9 @@ private:
 	Button* m_pBackButton;
 	Button* m_pNextButton;
 	Label* m_pInstructionsLabel;
+	Label* angle_label;
+	Label* velocity_x_label;
+	Label* velocity_y_label;
 
 	// PHYSICS VARS
 	float target_range = 485.0f;
