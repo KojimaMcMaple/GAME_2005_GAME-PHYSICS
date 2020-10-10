@@ -17,6 +17,7 @@ public:
 	virtual void clean() override;
 
 	void StartThrow(float velo, float angle);
+	void Stop();
 	void CalculateThrowAngle(float velo, float range);
 	void SetThrowAngle(float angle);
 	void SetInitialVelocity(float velo);

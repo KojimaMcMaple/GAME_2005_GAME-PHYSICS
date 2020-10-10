@@ -36,7 +36,6 @@ private:
 	glm::vec2 m_mousePosition;
 
 	Background* bkg_texture;
-	Plane* m_pPlaneSprite;
 	Player* m_pPlayer;
 	Target* m_pTarget;
 	Projectile* m_pProjectile;
