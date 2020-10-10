@@ -134,6 +134,10 @@ void PlayScene::start()
 	addChild(m_pPlayer);
 	m_playerFacingRight = true;
 
+	// Target Sprite
+	m_pTarget = new Target();
+	addChild(m_pTarget);
+
 	// Projectile Sprite
 	m_pProjectile = new Projectile(m_pPlayer->getTransform()->position);
 	addChild(m_pProjectile);

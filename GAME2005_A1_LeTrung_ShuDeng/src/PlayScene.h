@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "Projectile.h"
 #include "Button.h"
+#include "Target.h"
 #include "Label.h"
 
 class PlayScene : public Scene
@@ -32,6 +33,7 @@ private:
 	glm::vec2 m_mousePosition;
 
 	Background* bkg_texture;
+	Target* m_pTarget;
 	Plane* m_pPlaneSprite;
 	Player* m_pPlayer;
 	Projectile* m_pProjectile;
