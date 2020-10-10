@@ -5,7 +5,7 @@ using namespace std;
 
 Projectile::Projectile(glm::vec2 pos = glm::vec2(0.0f, 400.0f))
 {
-	TextureManager::Instance()->load("../Assets/textures/planet.png", "nade");
+	TextureManager::Instance()->load("../Assets/textures/nade.png", "nade");
 
 	const auto size = TextureManager::Instance()->getTextureSize("nade");
 	setWidth(size.x);
