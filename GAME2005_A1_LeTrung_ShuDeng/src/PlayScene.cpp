@@ -23,8 +23,7 @@ void PlayScene::draw()
 	if(EventManager::Instance().isIMGUIActive())
 	{
 		GUI_Function();
-	}
-
+	}	
 	
 	SDL_SetRenderDrawColor(Renderer::Instance()->getRenderer(), 255, 255, 255, 255);
 }
