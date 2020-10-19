@@ -34,19 +34,21 @@ void PlayScene::update()
 {
 	updateDisplayList();
 
-	angle_label->setText("Angle = " + std::to_string(m_pProjectile->GetThrowAngle()));
 	velocity_x_label->setText("Velo X = " + std::to_string(m_pProjectile->getRigidBody()->velocity.x));
 	velocity_y_label->setText("Velo Y = " + std::to_string(m_pProjectile->getRigidBody()->velocity.y));
 
-	if (CollisionManager::AABBCheck(m_pProjectile, m_pTarget))
+	if (m_touchedGround == false && m_pProjectile->getTransform()->position.x > m_points[1].x)
 	{
-		m_pProjectile->Stop();
+		m_touchedGround = true;
+		m_pProjectile->getRigidBody()->velocity = glm::vec2(glm::length(m_pProjectile->getRigidBody()->velocity), 0.0f);
+		m_pProjectile->getRigidBody()->acceleration = glm::vec2(- 9.8f * friction_coefficient, 0.0f);
+		m_pProjectile->getTransform()->position = glm::vec2(m_points[1].x, m_points[1].y - m_pProjectile->getHeight());
 	}
 
-	m_points[1].x = m_points[0].x + ramp_width;
-	m_points[1].y = m_points[0].y;
-	m_points[2].x = m_points[0].x;
-	m_points[2].y = m_points[0].y - ramp_height;
+	if (m_touchedGround == true && m_pProjectile->getRigidBody()->velocity.x <= 0.0f)
+	{
+		m_pProjectile->stop();
+	}
 }
 
 void PlayScene::clean()
@@ -147,20 +149,24 @@ void PlayScene::start()
 
 	// Player Sprite
 	m_pPlayer = new Player();
-	addChild(m_pPlayer);
+	//addChild(m_pPlayer);
 	m_playerFacingRight = true;
 	
-	// Target Sprite
-	m_pTarget = new Target(glm::vec2(target_range + m_pPlayer->getTransform()->position.x, m_pPlayer->getTransform()->position.y));
-	addChild(m_pTarget);
-
-	// Projectile Sprite
-	m_pProjectile = new Projectile(m_pPlayer->getTransform()->position);
-	addChild(m_pProjectile);
+	//// Target Sprite
+	//m_pTarget = new Target(glm::vec2(target_range + m_pPlayer->getTransform()->position.x, m_pPlayer->getTransform()->position.y));
+	//addChild(m_pTarget);
 
 	// Ramp
-	m_points[0].x = m_points[3].x = 300;
-	m_points[0].y = m_points[3].y = 400;
+	m_points[0].x = m_points[3].x = 150;
+	m_points[0].y = m_points[3].y = 450;
+	updateRamp();
+
+	m_touchedGround = false;
+
+	// Projectile Sprite
+	m_pProjectile = new Projectile();	
+	m_pProjectile->reset(glm::vec2(m_points[0].x, m_points[0].y - ramp_height - m_pProjectile->getHeight()));
+	addChild(m_pProjectile);	
 
 	// Back Button
 	m_pBackButton = new Button("../Assets/textures/backButton.png", "backButton", BACK_BUTTON);
@@ -209,35 +215,19 @@ void PlayScene::start()
 	m_pInstructionsLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.5f, 500.0f);
 	addChild(m_pInstructionsLabel);
 
-	angle_label = new Label("Angle = ", "Consolas", 20, color);
-	angle_label->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.5f, 50.0f);
-	addChild(angle_label);
-
 	velocity_x_label = new Label("Velo X = ", "Consolas", 20, color);
-	velocity_x_label->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.5f, 75.0f);
+	velocity_x_label->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.75f, 75.0f);
 	addChild(velocity_x_label);
 
 	velocity_y_label = new Label("Velo Y = ", "Consolas", 20, color);
-	velocity_y_label->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.5f, 100.0f);
+	velocity_y_label->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.75f, 100.0f);
 	addChild(velocity_y_label);
 }
 
-void PlayScene::UpdateTargetRange(float new_range)
+void PlayScene::StartSimulation() 
 {
-	target_range = new_range;
-	m_pTarget->getTransform()->position.x = new_range;
-}
-
-void PlayScene::UpdateThrowVelo(float new_velo)
-{
-	throw_velocity = new_velo;
-}
-
-void PlayScene::StartSimulation() {
-	/*m_pProjectile->SetInitialVelocity(95.0f);
-	m_pProjectile->SetThrowAngle(15.89f);*/
-	m_pProjectile->getTransform()->position = m_pPlayer->getTransform()->position;
-	m_pProjectile->StartThrow(throw_velocity, m_pTarget->getTransform()->position.x);
+	m_pProjectile->getRigidBody()->acceleration.x = 9.8f * glm::sin(ramp_theta) * glm::cos(ramp_theta);
+	m_pProjectile->getRigidBody()->acceleration.y = 9.8f * glm::sin(ramp_theta) * glm::sin(ramp_theta);
 }
 
 void PlayScene::GUI_Function()
@@ -250,14 +240,20 @@ void PlayScene::GUI_Function()
 	
 	ImGui::Begin("Simulation Controls", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar);
 
-	static float target_range_slider[1] = { target_range };
-	if (ImGui::SliderFloat("Target Range", target_range_slider, 50.0f, 800.0f)) {
-		UpdateTargetRange(target_range_slider[0]);
+	static float ramp_height_slider[1] = { ramp_height };
+	if (ImGui::SliderFloat("Ramp Height", ramp_height_slider, 0.0f, 500.0f)) {
+		ramp_height = ramp_height_slider[0];
+		updateRamp();
+		m_pProjectile->reset(glm::vec2(m_points[0].x, m_points[0].y - ramp_height - m_pProjectile->getHeight()));
+		m_touchedGround = false;
 	}
 
-	static float throw_velocity_slider[1] = { throw_velocity };
-	if (ImGui::SliderFloat("Throw Velo", throw_velocity_slider, 0.0f, 100.0f)) {
-		UpdateThrowVelo(throw_velocity_slider[0]);
+	static float ramp_width_slider[1] = { ramp_width };
+	if (ImGui::SliderFloat("Ramp Width", ramp_width_slider, 0.0f, 500.0f)) {
+		ramp_width = ramp_width_slider[0];
+		updateRamp();
+		m_pProjectile->reset(glm::vec2(m_points[0].x, m_points[0].y - ramp_height - m_pProjectile->getHeight()));
+		m_touchedGround = false;
 	}
 
 	if(ImGui::Button("Start Simulation"))
@@ -267,16 +263,6 @@ void PlayScene::GUI_Function()
 	}
 
 	ImGui::Separator();
-
-	static float ramp_height_slider[1] = { ramp_height };
-	if (ImGui::SliderFloat("Ramp Height", ramp_height_slider, 0.0f, 500.0f)) {
-		ramp_height = ramp_height_slider[0];
-	}
-
-	static float ramp_width_slider[1] = { ramp_width };
-	if (ImGui::SliderFloat("Ramp Width", ramp_width_slider, 0.0f, 500.0f)) {
-		ramp_width = ramp_width_slider[0];
-	}
 
 	/*static float float3[3] = { 0.0f, 1.0f, 1.5f };
 	if(ImGui::SliderFloat3("My Slider", float3, 0.0f, 2.0f))
@@ -295,4 +281,13 @@ void PlayScene::GUI_Function()
 	ImGui::Render();
 	ImGuiSDL::Render(ImGui::GetDrawData());
 	ImGui::StyleColorsDark();
+}
+
+void PlayScene::updateRamp()
+{
+	m_points[1].x = m_points[0].x + ramp_width;
+	m_points[1].y = m_points[0].y;
+	m_points[2].x = m_points[0].x;
+	m_points[2].y = m_points[0].y - ramp_height;
+	ramp_theta = glm::atan(ramp_height / ramp_width);
 }

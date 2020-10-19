@@ -3,7 +3,7 @@ using namespace std;
 
 #include "Projectile.h"
 
-Projectile::Projectile(glm::vec2 pos = glm::vec2(0.0f, 400.0f))
+Projectile::Projectile(glm::vec2 pos)
 {
 	TextureManager::Instance()->load("../Assets/textures/nade.png", "nade");
 
@@ -15,7 +15,7 @@ Projectile::Projectile(glm::vec2 pos = glm::vec2(0.0f, 400.0f))
 	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->isColliding = false;
 	setType(PROJECTILE);
-	setEnabled(false);
+	setEnabled(true);
 }
 
 Projectile::~Projectile() = default;
@@ -53,41 +53,16 @@ void Projectile::clean()
 
 }
 
-void Projectile::StartThrow(float velo, float range)
+void Projectile::reset(glm::vec2 pos)
 {
-	SetInitialVelocity(velo);
-	CalculateThrowAngle(velo, range);
-	setEnabled(true);
-	//start ticks
-
-	getRigidBody()->velocity.x = initial_velocity * cos(throw_angle * Globals::sPi / 180.0f);
-	getRigidBody()->velocity.y = -initial_velocity * sin(throw_angle * Globals::sPi / 180.0f);
-	getRigidBody()->acceleration = glm::vec2(0.0f, 9.8);
+	getTransform()->position = pos;
+	stop();
 }
 
-void Projectile::Stop()
+void Projectile::stop()
 {
 	getRigidBody()->acceleration = glm::vec2(0.0f);
 	getRigidBody()->velocity = glm::vec2(0.0f);
 }
 
-void Projectile::CalculateThrowAngle(float velo, float range)
-{
-	SetThrowAngle((asin(range * Globals::sGravity / (velo * velo)) / 2) * 180.0f / Globals::sPi);
-	//cout << "throw_angle = " << throw_angle;
-}
 
-void Projectile::SetThrowAngle(float angle)
-{
-	throw_angle = angle;
-}
-
-void Projectile::SetInitialVelocity(float velo)
-{
-	initial_velocity = velo;
-}
-
-float Projectile::GetThrowAngle()
-{
-	return throw_angle;
-}

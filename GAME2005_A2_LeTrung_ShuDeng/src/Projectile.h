@@ -7,8 +7,7 @@
 class Projectile : public DisplayObject
 {
 public:
-	Projectile();
-	Projectile(glm::vec2 pos);
+	Projectile(glm::vec2 pos = glm::vec2(0.0f, 0.0f));
 	~Projectile();
 
 	// Life Cycle Methods
@@ -16,16 +15,10 @@ public:
 	virtual void update() override;
 	virtual void clean() override;
 
-	void StartThrow(float velo, float angle);
-	void Stop();
-	void CalculateThrowAngle(float velo, float range);
-	void SetThrowAngle(float angle);
-	void SetInitialVelocity(float velo);
-	float GetThrowAngle();
+	void reset(glm::vec2 pos);
+	void stop();
+
 private:
-	float throw_angle;
 	float travel_time;
-	float initial_velocity;
-	float target_range;
 };
 
