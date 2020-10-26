@@ -49,6 +49,8 @@ private:
 	Label* m_pInstructionsLabel;
 	Label* velocity_x_label;
 	Label* velocity_y_label;
+	Label* acceleration_x_label;
+	Label* acceleration_y_label;
 
 	// PHYSICS VARS
 	float ramp_height = 100.0f;

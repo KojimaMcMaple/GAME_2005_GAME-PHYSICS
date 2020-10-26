@@ -36,7 +36,10 @@ void PlayScene::update()
 
 	velocity_x_label->setText("Velo X = " + std::to_string(m_pProjectile->getRigidBody()->velocity.x));
 	velocity_y_label->setText("Velo Y = " + std::to_string(m_pProjectile->getRigidBody()->velocity.y));
+	acceleration_x_label->setText("Acce X = " + std::to_string(m_pProjectile->getRigidBody()->acceleration.x));
+	acceleration_y_label->setText("Acce Y = " + std::to_string(m_pProjectile->getRigidBody()->acceleration.y));
 
+	// GROUND TOUCHED
 	if (m_touchedGround == false && m_pProjectile->getTransform()->position.x > m_points[1].x)
 	{
 		m_touchedGround = true;
@@ -45,6 +48,7 @@ void PlayScene::update()
 		m_pProjectile->getTransform()->position = glm::vec2(m_points[1].x, m_points[1].y - m_pProjectile->getHeight());
 	}
 
+	// POINT OF STOPPING
 	if (m_touchedGround == true && m_pProjectile->getRigidBody()->velocity.x <= 0.0f)
 	{
 		m_pProjectile->stop();
@@ -222,6 +226,14 @@ void PlayScene::start()
 	velocity_y_label = new Label("Velo Y = ", "Consolas", 20, color);
 	velocity_y_label->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.75f, 100.0f);
 	addChild(velocity_y_label);
+
+	acceleration_x_label = new Label("Acce X = ", "Consolas", 20, color);
+	acceleration_x_label->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.75f, 125.0f);
+	addChild(acceleration_x_label);
+
+	acceleration_y_label = new Label("Acce Y = ", "Consolas", 20, color);
+	acceleration_y_label->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.75f, 150.0f);
+	addChild(acceleration_y_label);
 }
 
 void PlayScene::StartSimulation() 
@@ -272,8 +284,6 @@ void PlayScene::GUI_Function()
 		std::cout << float3[2] << std::endl;
 		std::cout << "---------------------------\n";
 	}*/
-	
-
 
 	ImGui::End();
 
