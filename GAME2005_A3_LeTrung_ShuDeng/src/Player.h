@@ -4,6 +4,7 @@
 
 #include "PlayerAnimationState.h"
 #include "Sprite.h"
+#include "Util.h"
 
 class Player final : public Sprite
 {
@@ -16,6 +17,13 @@ public:
 	virtual void update() override;
 	virtual void clean() override;
 
+	void moveLeft();
+	void moveRight();
+	void moveUp();
+	void moveDown();
+	void StopMovingX();
+	void StopMovingY();
+
 	// setters
 	void setAnimationState(PlayerAnimationState new_state);
 
@@ -23,6 +31,10 @@ private:
 	void m_buildAnimations();
 
 	PlayerAnimationState m_currentAnimationState;
+
+	const float ACCELERATION = 10.0f;
+	const float DECELERATION = -25.0f;
+	glm::vec2 move_direction;
 };
 
 #endif /* defined (__PLAYER__) */

@@ -19,7 +19,7 @@ int main(int argc, char * args[])
 	freopen("CON", "w", stdout);
 
 
-	TheGame::Instance()->init("GAME2005_A1_LeTrung_ShuDeng", 100, 100, 800, 600, false);
+	TheGame::Instance()->init("GAME2005_A3_LeTrung_ShuDeng", 100, 100, 800, 600, false);
 
 	while (TheGame::Instance()->isRunning())
 	{

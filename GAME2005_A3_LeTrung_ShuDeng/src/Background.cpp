@@ -2,7 +2,7 @@
 
 Background::Background()
 {
-	TextureManager::Instance()->load("../Assets/textures/main_background.jpg", "main_background");
+	TextureManager::Instance()->load("../Assets/textures/main_background.png", "main_background");
 
 	const auto size = TextureManager::Instance()->getTextureSize("main_background");
 	setWidth(size.x);

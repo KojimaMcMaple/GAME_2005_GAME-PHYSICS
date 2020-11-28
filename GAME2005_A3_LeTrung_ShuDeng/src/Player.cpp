@@ -31,7 +31,7 @@ Player::Player(): m_currentAnimationState(PLAYER_IDLE_RIGHT)
 	const auto size = TextureManager::Instance()->getTextureSize("wookiee");
 	setWidth(size.x);
 	setHeight(size.y);
-	getTransform()->position = glm::vec2(50.0f, 400.0f);
+	getTransform()->position = glm::vec2(400.0f, 400.0f);
 	getRigidBody()->velocity = glm::vec2(0, 0);
 	getRigidBody()->isColliding = false;
 
@@ -78,6 +78,38 @@ void Player::draw()
 
 void Player::update()
 {
+	const float deltaTime = 1.0f / 60.f;
+
+	float move_direction_magnitude = Util::magnitude(move_direction);
+	// ACCELERATION
+	if (move_direction_magnitude > 0) {
+		getRigidBody()->acceleration = Util::normalize(move_direction) * ACCELERATION;
+		getRigidBody()->velocity += getRigidBody()->acceleration;
+	}
+	// DECELERATION
+	else if (Util::magnitude(getRigidBody()->velocity) > 0) {
+		getRigidBody()->acceleration = Util::normalize(getRigidBody()->velocity) * DECELERATION;
+
+		// CLAMPING
+		if (getRigidBody()->velocity.x < 0) {
+			getRigidBody()->velocity.x = std::min(0.0f, getRigidBody()->velocity.x + getRigidBody()->acceleration.x);
+		}
+		else if (getRigidBody()->velocity.x > 0) {
+			getRigidBody()->velocity.x = std::max(0.0f, getRigidBody()->velocity.x + getRigidBody()->acceleration.x);
+		}
+		if (getRigidBody()->velocity.y < 0) {
+			getRigidBody()->velocity.y = std::min(0.0f, getRigidBody()->velocity.y + getRigidBody()->acceleration.y);
+		}
+		else if (getRigidBody()->velocity.y > 0) {
+			getRigidBody()->velocity.y = std::max(0.0f, getRigidBody()->velocity.y + getRigidBody()->acceleration.y);
+		}
+	}
+
+	glm::vec2 pos = getTransform()->position;
+	pos.x += getRigidBody()->velocity.x * deltaTime;
+	pos.y += getRigidBody()->velocity.y * deltaTime;
+
+	getTransform()->position = pos;
 }
 
 void Player::clean()
@@ -110,4 +142,28 @@ void Player::m_buildAnimations()
 	runAnimation.frames.push_back(getSpriteSheet()->getFrame("megaman-run-3"));
 
 	setAnimation(runAnimation);
+}
+
+
+void Player::moveLeft() {
+	move_direction.x = -1;
+}
+
+void Player::moveRight() {
+	move_direction.x = 1;
+}
+
+void Player::moveUp() {
+	move_direction.y = -1;
+}
+
+void Player::moveDown() {
+	move_direction.y = 1;
+}
+
+void Player::StopMovingX() {
+	move_direction.x = 0;
+}
+void Player::StopMovingY() {
+	move_direction.y = 0;
 }

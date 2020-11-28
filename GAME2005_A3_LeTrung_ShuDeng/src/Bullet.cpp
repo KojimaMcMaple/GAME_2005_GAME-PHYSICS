@@ -48,6 +48,18 @@ void Bullet::draw()
 
 void Bullet::update()
 {
+	if (isEnabled()) {
+
+		getRigidBody()->velocity += getRigidBody()->acceleration * Globals::sDeltaTime;
+
+		/*cout << "velo.x = " << getRigidBody()->velocity.x << endl;
+		cout << "velo.y = " << getRigidBody()->velocity.y << endl;*/
+
+		getTransform()->position += getRigidBody()->velocity * Globals::sDeltaTime;
+
+		/*cout << "pos.x = " << getTransform()->position.x << endl;
+		cout << "pos.y = " << getTransform()->position.y << endl;*/
+	}
 }
 
 void Bullet::clean()
