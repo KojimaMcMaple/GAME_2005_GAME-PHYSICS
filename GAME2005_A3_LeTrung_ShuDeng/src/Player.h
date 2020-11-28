@@ -33,8 +33,8 @@ private:
 
 	PlayerAnimationState m_currentAnimationState;
 
-	const float acceleration_speed = 10.0f;
-	const float deceleration_speed = -25.0f;
+	const float kAccelerationSpeed = 10.0f;
+	const float kDecelerationSpeed = -25.0f;
 	glm::vec2 move_direction;
 };
 

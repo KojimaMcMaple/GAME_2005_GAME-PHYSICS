@@ -59,9 +59,7 @@ public:
 	void displayTextureMap();
 	void clean();
 	
-
 private:
-
 	TextureManager();
 	~TextureManager();
 

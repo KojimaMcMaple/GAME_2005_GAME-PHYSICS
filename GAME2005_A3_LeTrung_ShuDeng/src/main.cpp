@@ -4,6 +4,7 @@
 #include <Windows.h>
 
 #include "Game.h"
+#include "Globals.h"
 
 const int FPS = 60;
 const int DELAY_TIME = 1000.0f / FPS;
@@ -19,7 +20,7 @@ int main(int argc, char * args[])
 	freopen("CON", "w", stdout);
 
 
-	TheGame::Instance()->init("GAME2005_A3_LeTrung_ShuDeng", 100, 100, 800, 600, false);
+	TheGame::Instance()->init("GAME2005_A3_LeTrung_ShuDeng", 100, 100, Globals::kWindowWidth, Globals::kWindowHeight, false);
 
 	while (TheGame::Instance()->isRunning())
 	{

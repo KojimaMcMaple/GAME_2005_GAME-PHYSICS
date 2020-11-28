@@ -82,12 +82,12 @@ void Player::update()
 
 	// ACCELERATION
 	if (move_direction_magnitude > 0) {
-		getRigidBody()->acceleration = Util::normalize(move_direction) * acceleration_speed;
+		getRigidBody()->acceleration = Util::normalize(move_direction) * kAccelerationSpeed;
 		getRigidBody()->velocity += getRigidBody()->acceleration;
 	}
 	// DECELERATION
 	else if (Util::magnitude(getRigidBody()->velocity) > 0) {
-		getRigidBody()->acceleration = Util::normalize(getRigidBody()->velocity) * deceleration_speed;
+		getRigidBody()->acceleration = Util::normalize(getRigidBody()->velocity) * kDecelerationSpeed;
 
 		// CLAMPING
 		if (getRigidBody()->velocity.x < 0) {

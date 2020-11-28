@@ -136,7 +136,7 @@
       <Filter>Game Objects</Filter>
     </ClCompile>
     <ClCompile Include="..\src\BulletPool.cpp">
-      <Filter>Game Objects</Filter>
+      <Filter>Managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -285,7 +285,7 @@
       <Filter>Game Objects</Filter>
     </ClInclude>
     <ClInclude Include="..\src\BulletPool.h">
-      <Filter>Game Objects</Filter>
+      <Filter>Managers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

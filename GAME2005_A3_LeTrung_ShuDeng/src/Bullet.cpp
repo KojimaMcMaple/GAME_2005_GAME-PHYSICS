@@ -7,35 +7,52 @@ Bullet::Bullet()
 	const auto size = TextureManager::Instance()->getTextureSize("bullet_laser");
 	setWidth(size.x);
 	setHeight(size.y);
+	texture_size = glm::vec2(size.x, size.y);
 
-	getTransform()->position = glm::vec2(0.0f, 0.0f); //getTransform()->position = pos;
+	getTransform()->position = glm::vec2(0.0f, -size.y); //getTransform()->position = pos;
+	getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->isColliding = false;
 	setType(PROJECTILE);
-	setEnabled(true);
+	setEnabled(false);
+}
 
-	getRigidBody()->acceleration = glm::vec2(0.0f, acceleration_speed);
+Bullet::Bullet(int x_pos)
+{
+	
 }
 
 Bullet::Bullet(glm::vec2 pos)
 {
-	TextureManager::Instance()->load("../Assets/textures/bullet_laser.png", "bullet_laser");
-
-	const auto size = TextureManager::Instance()->getTextureSize("bullet_laser");
-	setWidth(size.x);
-	setHeight(size.y);
-
-	getTransform()->position = pos;
-	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
-	getRigidBody()->isColliding = false;
-	setType(PROJECTILE);
-	setEnabled(true);
-
-	getRigidBody()->acceleration = glm::vec2(0.0f, acceleration_speed);
+	
 }
 
 Bullet::~Bullet()
 {
+}
+
+void Bullet::SetXPos(int x_pos)
+{
+	getTransform()->position.x = x_pos;
+}
+
+void Bullet::AccelerateY()
+{
+	getRigidBody()->acceleration.y = acceleration_speed;
+}
+
+void Bullet::Activate()
+{
+	setEnabled(true);
+	AccelerateY();
+}
+
+void Bullet::Reset()
+{
+	getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
+	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
+	getTransform()->position = glm::vec2(0.0f, -texture_size.y);
+	setEnabled(false);
 }
 
 void Bullet::draw()
@@ -62,6 +79,10 @@ void Bullet::update()
 
 		/*cout << "pos.x = " << getTransform()->position.x << endl;
 		cout << "pos.y = " << getTransform()->position.y << endl;*/
+
+		if (getTransform()->position.y > Globals::kWindowHeight + texture_size.y) {
+			Reset();
+		}
 	}
 }
 
