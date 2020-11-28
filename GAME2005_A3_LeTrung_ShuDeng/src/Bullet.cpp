@@ -8,11 +8,13 @@ Bullet::Bullet()
 	setWidth(size.x);
 	setHeight(size.y);
 
-	getTransform()->position = glm::vec2(0.0f, 0.0f);
+	getTransform()->position = glm::vec2(0.0f, 0.0f); //getTransform()->position = pos;
 	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->isColliding = false;
 	setType(PROJECTILE);
 	setEnabled(true);
+
+	getRigidBody()->acceleration = glm::vec2(0.0f, acceleration_speed);
 }
 
 Bullet::Bullet(glm::vec2 pos)
@@ -28,6 +30,8 @@ Bullet::Bullet(glm::vec2 pos)
 	getRigidBody()->isColliding = false;
 	setType(PROJECTILE);
 	setEnabled(true);
+
+	getRigidBody()->acceleration = glm::vec2(0.0f, acceleration_speed);
 }
 
 Bullet::~Bullet()
@@ -49,7 +53,6 @@ void Bullet::draw()
 void Bullet::update()
 {
 	if (isEnabled()) {
-
 		getRigidBody()->velocity += getRigidBody()->acceleration * Globals::sDeltaTime;
 
 		/*cout << "velo.x = " << getRigidBody()->velocity.x << endl;

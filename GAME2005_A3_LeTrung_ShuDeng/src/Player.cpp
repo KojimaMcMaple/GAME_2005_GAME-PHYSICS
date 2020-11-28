@@ -26,9 +26,9 @@ Player::Player(): m_currentAnimationState(PLAYER_IDLE_RIGHT)
 	m_buildAnimations();
 	*/
 
-	TextureManager::Instance()->load("../Assets/textures/wookiee.png", "wookiee");
+	TextureManager::Instance()->load("../Assets/textures/player_ship.png", "player_ship");
 
-	const auto size = TextureManager::Instance()->getTextureSize("wookiee");
+	const auto size = TextureManager::Instance()->getTextureSize("player_ship");
 	setWidth(size.x);
 	setHeight(size.y);
 	getTransform()->position = glm::vec2(400.0f, 400.0f);
@@ -72,23 +72,22 @@ void Player::draw()
 	}
 	*/
 
-	TextureManager::Instance()->draw("wookiee", x, y, 0, 255, true);
+	TextureManager::Instance()->draw("player_ship", x, y, 0, 255, true);
 	
 }
 
 void Player::update()
 {
-	const float deltaTime = 1.0f / 60.f;
-
 	float move_direction_magnitude = Util::magnitude(move_direction);
+
 	// ACCELERATION
 	if (move_direction_magnitude > 0) {
-		getRigidBody()->acceleration = Util::normalize(move_direction) * ACCELERATION;
+		getRigidBody()->acceleration = Util::normalize(move_direction) * acceleration_speed;
 		getRigidBody()->velocity += getRigidBody()->acceleration;
 	}
 	// DECELERATION
 	else if (Util::magnitude(getRigidBody()->velocity) > 0) {
-		getRigidBody()->acceleration = Util::normalize(getRigidBody()->velocity) * DECELERATION;
+		getRigidBody()->acceleration = Util::normalize(getRigidBody()->velocity) * deceleration_speed;
 
 		// CLAMPING
 		if (getRigidBody()->velocity.x < 0) {
@@ -106,10 +105,12 @@ void Player::update()
 	}
 
 	glm::vec2 pos = getTransform()->position;
-	pos.x += getRigidBody()->velocity.x * deltaTime;
-	pos.y += getRigidBody()->velocity.y * deltaTime;
+	pos.x += getRigidBody()->velocity.x * Globals::sDeltaTime;
+	pos.y += getRigidBody()->velocity.y * Globals::sDeltaTime;
 
 	getTransform()->position = pos;
+
+
 }
 
 void Player::clean()

@@ -6,6 +6,7 @@
 #include "Background.h"
 #include "Plane.h"
 #include "Player.h"
+#include "Bullet.h"
 #include "Target.h"
 #include "Projectile.h"
 #include "Button.h"
@@ -39,6 +40,7 @@ private:
 
 	Background* bkg_texture;
 	Player* m_pPlayer;
+	Bullet* bullet;
 	Target* m_pTarget;
 	Projectile* m_pProjectile;
 	bool m_playerFacingRight;

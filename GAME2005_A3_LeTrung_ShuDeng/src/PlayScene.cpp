@@ -180,6 +180,10 @@ void PlayScene::start()
 	addChild(m_pPlayer);
 	m_playerFacingRight = true;
 	
+	// Bullet Sprite
+	bullet = new Bullet();
+	addChild(bullet);
+
 	//// Target Sprite
 	//m_pTarget = new Target(glm::vec2(target_range + m_pPlayer->getTransform()->position.x, m_pPlayer->getTransform()->position.y));
 	//addChild(m_pTarget);

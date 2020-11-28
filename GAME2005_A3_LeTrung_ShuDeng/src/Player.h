@@ -5,6 +5,7 @@
 #include "PlayerAnimationState.h"
 #include "Sprite.h"
 #include "Util.h"
+#include "Globals.h"
 
 class Player final : public Sprite
 {
@@ -32,8 +33,8 @@ private:
 
 	PlayerAnimationState m_currentAnimationState;
 
-	const float ACCELERATION = 10.0f;
-	const float DECELERATION = -25.0f;
+	const float acceleration_speed = 10.0f;
+	const float deceleration_speed = -25.0f;
 	glm::vec2 move_direction;
 };
 

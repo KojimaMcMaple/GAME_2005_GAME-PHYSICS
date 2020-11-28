@@ -15,7 +15,7 @@ public:
 	virtual void draw() override;
 	virtual void update() override;
 	virtual void clean() override;
+
 private:
-
+	float acceleration_speed = 80.0f;
 };
-
