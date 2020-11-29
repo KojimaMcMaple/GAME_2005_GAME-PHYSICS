@@ -19,6 +19,7 @@ PlayScene::~PlayScene()
 void PlayScene::draw()
 {
 	drawDisplayList();
+	BulletPool::Instance()->Draw();
 
 	if(EventManager::Instance().isIMGUIActive())
 	{
@@ -33,6 +34,7 @@ void PlayScene::draw()
 void PlayScene::update()
 {
 	updateDisplayList();
+	BulletPool::Instance()->Update();
 
 	//velocity_x_label->setText("Velo X = " + std::to_string(m_pProjectile->getRigidBody()->velocity.x));
 	//velocity_y_label->setText("Velo Y = " + std::to_string(m_pProjectile->getRigidBody()->velocity.y));
@@ -180,9 +182,10 @@ void PlayScene::start()
 	addChild(m_pPlayer);
 	m_playerFacingRight = true;
 	
-	// Bullet Sprite
-	bullet = new Bullet();
-	addChild(bullet);
+	// Bullet Pool
+	BulletPool::Instance()->Populate();
+	//bullet = new Bullet();
+	//addChild(bullet);
 
 	//// Target Sprite
 	//m_pTarget = new Target(glm::vec2(target_range + m_pPlayer->getTransform()->position.x, m_pPlayer->getTransform()->position.y));

@@ -36,15 +36,22 @@ void Bullet::SetXPos(int x_pos)
 	getTransform()->position.x = x_pos;
 }
 
-void Bullet::AccelerateY()
+void Bullet::AccelerateYAtDefaultSpeed()
 {
 	getRigidBody()->acceleration.y = acceleration_speed;
 }
 
-void Bullet::Activate()
+void Bullet::AccelerateYAtRandomSpeed()
+{
+	getRigidBody()->acceleration.y = (rand() % (int)max_acceleration_speed) + (int)acceleration_speed;
+}
+
+void Bullet::SpawnAtRandomX()
 {
 	setEnabled(true);
-	AccelerateY();
+	int bullet_max_x = (Globals::kWindowWidth - texture_size.x);
+	SetXPos(rand() % bullet_max_x); //spawn bullet at random x_pos but not outside of screen
+	AccelerateYAtDefaultSpeed();
 }
 
 void Bullet::Reset()
@@ -80,9 +87,10 @@ void Bullet::update()
 		/*cout << "pos.x = " << getTransform()->position.x << endl;
 		cout << "pos.y = " << getTransform()->position.y << endl;*/
 
-		if (getTransform()->position.y > Globals::kWindowHeight + texture_size.y) {
+		// DESPAWN (now managed by BulletPool)
+		/*if (getTransform()->position.y > Globals::kWindowHeight + texture_size.y) {
 			Reset();
-		}
+		}*/
 	}
 }
 

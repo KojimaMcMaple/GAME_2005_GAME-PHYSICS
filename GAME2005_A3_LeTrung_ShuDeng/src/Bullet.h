@@ -21,7 +21,7 @@ private:
 
 	void SetXPos(int x_pos);
 	void AccelerateY();
-	void Activate();
+	void SpawnAtRandomX();
 	void Reset();
 
 	// Life Cycle Methods
@@ -31,5 +31,6 @@ private:
 
 	glm::vec2 texture_size;
 	float acceleration_speed = 80.0f;
+	float max_acceleration_speed = 160.0f;
 	bool is_in_use = false;
 };

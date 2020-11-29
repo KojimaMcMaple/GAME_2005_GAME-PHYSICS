@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "Bullet.h"
+#include "Globals.h"
 using namespace std;
 
 class BulletPool
@@ -14,6 +15,10 @@ public:
 		}
 		return kInstance;
 	}
+
+	void Populate();
+	void SpawnBullet();
+	void DespawnBullet(Bullet* bullet_ptr, int bullet_idx);
 
 	void Draw();
 	void Update();
