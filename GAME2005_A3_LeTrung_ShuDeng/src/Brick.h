@@ -11,5 +11,8 @@ public:
 	virtual void update() override;
 	virtual void clean() override;
 
+private:
+	glm::vec2 m_previousPos;
+
 };
 

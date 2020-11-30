@@ -1,9 +1,10 @@
 #include "Brick.h"
+#include "Globals.h"
 #include "TextureManager.h"
 
 Brick::Brick()
 {
-	TextureManager::Instance()->load("../Assets/textures/wookiee.png", "wookiee");
+	TextureManager::Instance()->load("../Assets/textures/startButton.png", "wookiee");
 
 	const auto size = TextureManager::Instance()->getTextureSize("wookiee");
 	setWidth(size.x);
@@ -20,11 +21,13 @@ void Brick::draw()
 	const auto x = getTransform()->position.x;
 	const auto y = getTransform()->position.y;
 
-	TextureManager::Instance()->draw("wookiee", x, y, 0, 255, true);
+	TextureManager::Instance()->draw("wookiee", x, y, 0, 255, false);
 }
 
 void Brick::update()
 {
+	getRigidBody()->velocity = (getTransform()->position - m_previousPos) / Globals::sDeltaTime;
+	m_previousPos = getTransform()->position;
 }
 
 void Brick::clean()

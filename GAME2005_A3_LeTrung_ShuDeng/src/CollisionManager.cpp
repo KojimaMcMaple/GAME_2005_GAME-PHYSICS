@@ -52,25 +52,20 @@ bool CollisionManager::squaredRadiusCheck(GameObject* object1, GameObject* objec
 bool CollisionManager::AABBCheck(GameObject* object1, GameObject* object2)
 {
 	// prepare relevant variables
-	const auto p1Center = object1->getTransform()->position;
-	const auto p2Center = object2->getTransform()->position;
+	const auto p1 = object1->getTransform()->position;
+	const auto p2 = object2->getTransform()->position;
 	const float p1Width = object1->getWidth();
 	const float p1Height = object1->getHeight();
 	const float p2Width = object2->getWidth();
 	const float p2Height = object2->getHeight();
 
-	// Change the center position to corner position
-	const auto p1Corner = glm::vec2(p1Center.x - p1Width * 0.5f, p1Center.y - p1Height * 0.5f);
-	const auto p2Corner = glm::vec2(p2Center.x - p2Width * 0.5f, p2Center.y - p2Height * 0.5f);
-
 	if (
-		p1Corner.x < p2Corner.x + p2Width &&
-		p1Corner.x + p1Width > p2Corner.x&&
-		p1Corner.y < p2Corner.y + p2Height &&
-		p1Corner.y + p1Height > p2Corner.y
+		p1.x < p2.x + p2Width &&
+		p1.x + p1Width > p2.x &&
+		p1.y < p2.y + p2Height &&
+		p1.y + p1Height > p2.y
 		)
 	{
-		/*
 		if (!object2->getRigidBody()->isColliding) {
 
 			object2->getRigidBody()->isColliding = true;
@@ -81,22 +76,21 @@ bool CollisionManager::AABBCheck(GameObject* object1, GameObject* object2)
 				SoundManager::Instance().playSound("yay", 0);
 				break;
 			default:
-				
+
 				break;
 			}
 
-			//return true;
+			return true;
 		}
-		*/
-		return true;
+		return false;
 	}
 	else
 	{
-		//object2->getRigidBody()->isColliding = false;
+		object2->getRigidBody()->isColliding = false;
 		return false;
 	}
 
-	//return false;
+	return false;
 }
 
 bool CollisionManager::lineLineCheck(const glm::vec2 line1_start, const glm::vec2 line1_end, const glm::vec2 line2_start, const glm::vec2 line2_end)
@@ -223,7 +217,7 @@ int CollisionManager::circleAABBsquaredDistance(const glm::vec2 circle_centre, i
 bool CollisionManager::circleAABBCheck(GameObject* object1, GameObject* object2)
 {
 	// circle
-	const auto circleCentre = object1->getTransform()->position;
+	const auto circleCentre = object1->getTransform()->position + glm::vec2(object1->getWidth() * 0.5f, object1->getHeight() * 0.5f);
 	const int circleRadius = std::max(object1->getWidth() * 0.5f, object1->getHeight() * 0.5f);
 	// aabb
 	const auto boxWidth = object2->getWidth();
@@ -231,10 +225,11 @@ bool CollisionManager::circleAABBCheck(GameObject* object1, GameObject* object2)
 	const auto boxHeight = object2->getHeight();
 	int halfBoxHeight = boxHeight * 0.5f;
 
-	const auto boxStart = object2->getTransform()->position - glm::vec2(boxWidth * 0.5f, boxHeight * 0.5f);
+	const auto boxStart = object2->getTransform()->position;
 
 	if (circleAABBsquaredDistance(circleCentre, circleRadius, boxStart, boxWidth, boxHeight) <= (circleRadius * circleRadius))
 	{
+		/*
 		if (!object2->getRigidBody()->isColliding) {
 
 			object2->getRigidBody()->isColliding = true;
@@ -294,14 +289,14 @@ bool CollisionManager::circleAABBCheck(GameObject* object1, GameObject* object2)
 			return true;
 		}
 		return false;
+		*/
+		return true;
 	}
 	else
 	{
-		object2->getRigidBody()->isColliding = false;
+		//object2->getRigidBody()->isColliding = false;
 		return false;
 	}
-
-	return false;
 }
 
 bool CollisionManager::pointRectCheck(const glm::vec2 point, const glm::vec2 rect_start, const float rect_width, const float rect_height)
