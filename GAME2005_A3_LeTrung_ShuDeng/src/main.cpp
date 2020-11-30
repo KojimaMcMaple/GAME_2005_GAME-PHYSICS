@@ -2,8 +2,6 @@
 #include <crtdbg.h>
 #include <iostream>
 #include <Windows.h>
-#include <stdlib.h>     /* srand, rand */
-#include <time.h>       /* time */
 
 #include "Game.h"
 #include "Globals.h"
@@ -13,8 +11,6 @@ const int DELAY_TIME = 1000.0f / FPS;
 
 int main(int argc, char * args[])
 {
-	srand(time(NULL));
-	
 	Uint32 frameStart, frameTime;
 	UINT32 frames = 0;
 

@@ -1,14 +1,10 @@
 #pragma once
-
-#include "Globals.h"
 #include "DisplayObject.h"
-#include "TextureManager.h"
-
-class Projectile : public DisplayObject
+class Brick :
+    public DisplayObject
 {
 public:
-	Projectile(glm::vec2 position = glm::vec2(0.0f, 0.0f), float speed = 0.0f);
-	~Projectile();
+    Brick();
 
 	// Life Cycle Methods
 	virtual void draw() override;
@@ -16,6 +12,7 @@ public:
 	virtual void clean() override;
 
 private:
+	glm::vec2 m_previousPos;
 
 };
 

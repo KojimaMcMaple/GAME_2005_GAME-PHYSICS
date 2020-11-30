@@ -19,7 +19,6 @@ PlayScene::~PlayScene()
 void PlayScene::draw()
 {
 	drawDisplayList();
-	BulletPool::Instance()->Draw();
 
 	if(EventManager::Instance().isIMGUIActive())
 	{
@@ -28,19 +27,12 @@ void PlayScene::draw()
 	
 	SDL_SetRenderDrawColor(Renderer::Instance()->getRenderer(), 255, 255, 255, 255);
 
-	SDL_RenderDrawLines(Renderer::Instance()->getRenderer(), m_points, 4);
 }
 
 void PlayScene::update()
 {
 	updateDisplayList();
 
-	BulletPool::Instance()->CheckBulletCollision(m_pPlayer);
-	BulletPool::Instance()->Update();
-
-	no_active_bullet_label->setText("Active Bullets = " + std::to_string(BulletPool::Instance()->GetSizeActiveBulletList()));
-	no_inactive_bullet_label->setText("Inactive Bullets = " + std::to_string(BulletPool::Instance()->GetSizeInactiveBulletList()));
-	
 }
 
 void PlayScene::clean()
@@ -50,89 +42,7 @@ void PlayScene::clean()
 
 void PlayScene::handleEvents()
 {
-	EventManager::Instance().update();
-
-	// handle player movement with GameController
-	if (SDL_NumJoysticks() > 0)
-	{
-		if (EventManager::Instance().getGameController(0) != nullptr)
-		{
-			const auto deadZone = 10000;
-			if (EventManager::Instance().getGameController(0)->LEFT_STICK_X > deadZone)
-			{
-				m_pPlayer->setAnimationState(PLAYER_RUN_RIGHT);
-				m_playerFacingRight = true;
-			}
-			else if (EventManager::Instance().getGameController(0)->LEFT_STICK_X < -deadZone)
-			{
-				m_pPlayer->setAnimationState(PLAYER_RUN_LEFT);
-				m_playerFacingRight = false;
-			}
-			else
-			{
-				if (m_playerFacingRight)
-				{
-					m_pPlayer->setAnimationState(PLAYER_IDLE_RIGHT);
-				}
-				else
-				{
-					m_pPlayer->setAnimationState(PLAYER_IDLE_LEFT);
-				}
-			}
-		}
-	}
-
-
-	// handle player movement if no Game Controllers found
-	if (SDL_NumJoysticks() < 1)
-	{
-		/*if (EventManager::Instance().isKeyDown(SDL_SCANCODE_A))
-		{
-			m_pPlayer->setAnimationState(PLAYER_RUN_LEFT);
-			m_playerFacingRight = false;
-		}
-		else if (EventManager::Instance().isKeyDown(SDL_SCANCODE_D))
-		{
-			m_pPlayer->setAnimationState(PLAYER_RUN_RIGHT);
-			m_playerFacingRight = true;
-		}
-		else
-		{
-			if (m_playerFacingRight)
-			{
-				m_pPlayer->setAnimationState(PLAYER_IDLE_RIGHT);
-			}
-			else
-			{
-				m_pPlayer->setAnimationState(PLAYER_IDLE_LEFT);
-			}
-		}*/
-
-		if (EventManager::Instance().isKeyDown(SDL_SCANCODE_A))
-		{
-			m_pPlayer->moveLeft();
-		}
-		else if (EventManager::Instance().isKeyDown(SDL_SCANCODE_D))
-		{
-			m_pPlayer->moveRight();
-		}
-		else {
-			m_pPlayer->StopMovingX();
-		}
-
-		if (EventManager::Instance().isKeyDown(SDL_SCANCODE_W))
-		{
-			m_pPlayer->moveUp();
-		}
-		else if (EventManager::Instance().isKeyDown(SDL_SCANCODE_S))
-		{
-			m_pPlayer->moveDown();
-		}
-		else {
-			m_pPlayer->StopMovingY();
-		}
-	}
-	
+	EventManager::Instance().update();	
 
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_ESCAPE))
 	{
@@ -141,35 +51,31 @@ void PlayScene::handleEvents()
 
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_1))
 	{
-		TheGame::Instance()->changeSceneState(START_SCENE);
+		TheGame::Instance()->changeSceneState(PLAY_SCENE_01);
 	}
 
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_2))
 	{
 		TheGame::Instance()->changeSceneState(END_SCENE);
 	}
+
+	m_pPlayerBrick->getTransform()->position = EventManager::Instance().getMousePosition();
 }
 
 void PlayScene::start()
 {
 	// Set GUI Title
-	m_guiTitle = "Play Scene";
+	m_guiTitle = "Pong Scene";
 	
 	// BKG TEXTURE
 	bkg_texture = new Background();
-	addChild(bkg_texture);
+	addChild(bkg_texture);	
 
-	//// Plane Sprite
-	//m_pPlaneSprite = new Plane();
-	//addChild(m_pPlaneSprite);
+	m_pPlayerBrick = new Brick();
+	addChild(m_pPlayerBrick);
 
-	// Player Sprite
-	m_pPlayer = new Player();
-	addChild(m_pPlayer);
-	m_playerFacingRight = true;
-	
-	// Bullet Pool
-	BulletPool::Instance()->Populate();
+	m_pBall = new Projectile(glm::vec2(400, 300), 200);
+	addChild(m_pBall);
 
 	// Back Button
 	m_pBackButton = new Button("../Assets/textures/backButton.png", "backButton", BACK_BUTTON);
@@ -177,7 +83,7 @@ void PlayScene::start()
 	m_pBackButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pBackButton->setActive(false);
-		TheGame::Instance()->changeSceneState(START_SCENE);
+		TheGame::Instance()->changeSceneState(PLAY_SCENE_01);
 	});
 
 	m_pBackButton->addEventListener(MOUSE_OVER, [&]()->void
@@ -218,23 +124,13 @@ void PlayScene::start()
 	m_pInstructionsLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.5f, 500.0f);
 	addChild(m_pInstructionsLabel);
 
-	no_active_bullet_label = new Label("Active Bullets = ", "Consolas", 20, color);
-	no_active_bullet_label->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.75f, 50.0f);
-	addChild(no_active_bullet_label);
+	velocity_x_label = new Label("Velo X = ", "Consolas", 20, color);
+	velocity_x_label->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.75f, 75.0f);
+	addChild(velocity_x_label);
 
-	no_inactive_bullet_label = new Label("Inactive Bullets = ", "Consolas", 20, color);
-	no_inactive_bullet_label->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.75f, 75.0f);
-	addChild(no_inactive_bullet_label);
-
-
-	// SOUNDS
-	/*SoundManager::Instance().load("../Assets/audio/laser_hit.wav", "laser_hit", SOUND_SFX);*/
-}
-
-void PlayScene::StartSimulation() 
-{
-	//m_pProjectile->getRigidBody()->acceleration.x = 9.8f * glm::sin(ramp_theta) * glm::cos(ramp_theta);
-	//m_pProjectile->getRigidBody()->acceleration.y = 9.8f * glm::sin(ramp_theta) * glm::sin(ramp_theta);
+	velocity_y_label = new Label("Velo Y = ", "Consolas", 20, color);
+	velocity_y_label->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.75f, 100.0f);
+	addChild(velocity_y_label);
 }
 
 void PlayScene::GUI_Function()
@@ -247,30 +143,6 @@ void PlayScene::GUI_Function()
 	
 	ImGui::Begin("Simulation Controls", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar);
 
-	//static float ramp_height_slider[1] = { ramp_height };
-	//if (ImGui::SliderFloat("Ramp Height", ramp_height_slider, 0.0f, 500.0f)) {
-	//	ramp_height = ramp_height_slider[0];
-	//	updateRamp();
-	//	m_pProjectile->reset(glm::vec2(m_points[0].x, m_points[0].y - ramp_height - m_pProjectile->getHeight()));
-	//	m_touchedGround = false;
-	//}
-
-	//static float ramp_width_slider[1] = { ramp_width };
-	//if (ImGui::SliderFloat("Ramp Width", ramp_width_slider, 0.0f, 500.0f)) {
-	//	ramp_width = ramp_width_slider[0];
-	//	updateRamp();
-	//	m_pProjectile->reset(glm::vec2(m_points[0].x, m_points[0].y - ramp_height - m_pProjectile->getHeight()));
-	//	m_touchedGround = false;
-	//}
-
-	if(ImGui::Button("Default Bullet Acceleration"))
-	{
-		BulletPool::Instance()->SetSpawnMode(0);
-	}
-	if(ImGui::Button("Random Bullet Acceleration"))
-	{
-		BulletPool::Instance()->SetSpawnMode(1);
-	}
 
 	ImGui::Separator();
 
@@ -290,12 +162,4 @@ void PlayScene::GUI_Function()
 	ImGuiSDL::Render(ImGui::GetDrawData());
 	ImGui::StyleColorsDark();
 }
-//
-//void PlayScene::updateRamp()
-//{
-//	m_points[1].x = m_points[0].x + ramp_width;
-//	m_points[1].y = m_points[0].y;
-//	m_points[2].x = m_points[0].x;
-//	m_points[2].y = m_points[0].y - ramp_height;
-//	ramp_theta = glm::atan(ramp_height / ramp_width);
-//}
+

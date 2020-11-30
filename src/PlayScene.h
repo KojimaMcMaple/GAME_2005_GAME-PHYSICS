@@ -26,6 +26,11 @@ private:
 	// IMGUI Function
 	void GUI_Function();
 
+	void solveBoundaryCollision();
+	void solveBrickCollision();
+	void solveBrickCollisionY();
+	void solveBrickCollisionX();
+
 	std::string m_guiTitle;
 	
 	glm::vec2 m_mousePosition;
@@ -38,18 +43,11 @@ private:
 	Button* m_pBackButton;
 	Button* m_pNextButton;
 	Label* m_pInstructionsLabel;
-	Label* velocity_x_label;
-	Label* velocity_y_label;
 
-	// PHYSICS VARS
-	float ramp_height = 100.0f;
-	float ramp_width = 100.0f;
-	float ramp_theta;
-	float friction_coefficient = 0.42f;
-
-	SDL_Point m_points[4];
-
-	bool m_touchedGround;
+	float m_dampingFactorNormal = 0.7f;
+	float m_dampingFactorTangent = 1.0f;
+	float m_amplifyingFactorTangent = 0.5f;
+	float m_amplifyingFactorNormal = 1.3f;
 };
 
 #endif /* defined (__PLAY_SCENE__) */

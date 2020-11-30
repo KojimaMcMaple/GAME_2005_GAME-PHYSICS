@@ -25,6 +25,7 @@ private:
 	Label* m_pAuthorLabel1{};
 	Label* m_pAuthorLabel2{};
 	Label* m_pInstructionsLabel{};
+	Label* m_pInstructionsLabel2{};
 
 	Ship* m_pShip{};
 

@@ -15,6 +15,7 @@
 
 // Scenes
 #include "StartScene.h"
+#include "PlayScene01.h"
 #include "PlayScene.h"
 #include "EndScene.h"
 

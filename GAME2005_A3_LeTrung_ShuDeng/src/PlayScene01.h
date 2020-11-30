@@ -1,19 +1,23 @@
 #pragma once
-#ifndef __PLAY_SCENE__
-#define __PLAY_SCENE__
+#ifndef __PLAY_SCENE_01__
+#define __PLAY_SCENE_01__
 
 #include "Scene.h"
 #include "Background.h"
+#include "Plane.h"
+#include "Player.h"
+#include "BulletPool.h"
+#include "Target.h"
 #include "Projectile.h"
 #include "Button.h"
-#include "Brick.h"
+#include "Target.h"
 #include "Label.h"
 
-class PlayScene : public Scene
+class PlayScene01 : public Scene
 {
 public:
-	PlayScene();
-	~PlayScene();
+	PlayScene01();
+	~PlayScene01();
 
 	// Scene LifeCycle Functions
 	virtual void draw() override;
@@ -22,6 +26,7 @@ public:
 	virtual void handleEvents() override;
 	virtual void start() override;
 
+	void StartSimulation();
 private:
 	// IMGUI Function
 	void GUI_Function();
@@ -31,15 +36,17 @@ private:
 	glm::vec2 m_mousePosition;
 
 	Background* bkg_texture;
-	Brick* m_pPlayerBrick;
-	Projectile* m_pBall;
+	Player* m_pPlayer;
+	Target* m_pTarget;
+	Projectile* m_pProjectile;
+	bool m_playerFacingRight;
 
 	// UI Items
 	Button* m_pBackButton;
 	Button* m_pNextButton;
 	Label* m_pInstructionsLabel;
-	Label* velocity_x_label;
-	Label* velocity_y_label;
+	Label* no_active_bullet_label;
+	Label* no_inactive_bullet_label;
 
 	// PHYSICS VARS
 	float ramp_height = 100.0f;

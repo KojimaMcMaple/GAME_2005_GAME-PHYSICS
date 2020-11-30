@@ -40,7 +40,6 @@ private:
 	int pool_size = 10;
 	vector<Bullet*> active_bullet_list;
 	vector<Bullet*> inactive_bullet_list;
-	vector<Bullet*>::iterator it;
 
 	int spawn_mode = 0;
 };

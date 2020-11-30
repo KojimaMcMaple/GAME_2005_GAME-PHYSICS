@@ -3,7 +3,7 @@ using namespace std;
 
 #include "Projectile.h"
 
-Projectile::Projectile(glm::vec2 pos)
+Projectile::Projectile(glm::vec2 position, float speed)
 {
 	TextureManager::Instance()->load("../Assets/textures/nade.png", "nade");
 
@@ -11,8 +11,9 @@ Projectile::Projectile(glm::vec2 pos)
 	setWidth(size.x);
 	setHeight(size.y);
 
-	getTransform()->position = pos;
-	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
+	getTransform()->position = position;
+	float initialVelocityDirection = rand() % 360 * float(M_PI) / 180.0f;
+	getRigidBody()->velocity = speed * glm::vec2(cos(initialVelocityDirection), sin(initialVelocityDirection));
 	getRigidBody()->isColliding = false;
 	setType(PROJECTILE);
 	setEnabled(true);
@@ -53,16 +54,5 @@ void Projectile::clean()
 
 }
 
-void Projectile::reset(glm::vec2 pos)
-{
-	getTransform()->position = pos;
-	stop();
-}
-
-void Projectile::stop()
-{
-	getRigidBody()->acceleration = glm::vec2(0.0f);
-	getRigidBody()->velocity = glm::vec2(0.0f);
-}
 
 

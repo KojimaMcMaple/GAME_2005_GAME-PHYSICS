@@ -39,6 +39,10 @@ void StartScene::handleEvents()
 
 	if(EventManager::Instance().isKeyDown(SDL_SCANCODE_1))
 	{
+		TheGame::Instance()->changeSceneState(PLAY_SCENE_01);
+	}
+	else if(EventManager::Instance().isKeyDown(SDL_SCANCODE_2))
+	{
 		TheGame::Instance()->changeSceneState(PLAY_SCENE);
 	}
 }
@@ -58,9 +62,12 @@ void StartScene::start()
 	addChild(m_pAuthorLabel2);
 
 
-	m_pInstructionsLabel = new Label("Press 1 to Play", "Consolas", 40, blue, glm::vec2(400.0f, 180.0f));
+	m_pInstructionsLabel = new Label("Press 1 for Part 1", "Consolas", 40, blue, glm::vec2(400.0f, 180.0f));
 	m_pInstructionsLabel->setParent(this);
 	addChild(m_pInstructionsLabel);
+	m_pInstructionsLabel2 = new Label("Press 2 for Part 2", "Consolas", 40, blue, glm::vec2(400.0f, 240.0f));
+	m_pInstructionsLabel2->setParent(this);
+	addChild(m_pInstructionsLabel2);
 
 
 	m_pShip = new Ship();
@@ -69,12 +76,12 @@ void StartScene::start()
 
 	// Start Button
 	m_pStartButton = new Button();
-	m_pStartButton->getTransform()->position = glm::vec2(400.0f, 400.0f); 
+	m_pStartButton->getTransform()->position = glm::vec2(400.0f, 500.0f); 
 
 	m_pStartButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pStartButton->setActive(false);
-		TheGame::Instance()->changeSceneState(PLAY_SCENE);
+		TheGame::Instance()->changeSceneState(PLAY_SCENE_01);
 	});
 	
 	m_pStartButton->addEventListener(MOUSE_OVER, [&]()->void

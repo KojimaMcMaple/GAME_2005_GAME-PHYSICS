@@ -41,7 +41,7 @@ void BulletPool::CheckBulletCollision(GameObject* checking_obj)
 {
 	if (!active_bullet_list.empty())
 	{
-		for (it = active_bullet_list.begin(); it != active_bullet_list.end(); it++) {
+		for (vector<Bullet*>::iterator it = active_bullet_list.begin(); it != active_bullet_list.end(); it++) {
 			if (CollisionManager::AABBCheck((*it), checking_obj)) {
 				if ((*it)->getRigidBody()->isColliding == false) {
 					(*it)->getRigidBody()->isColliding = true;
@@ -74,7 +74,7 @@ void BulletPool::Draw()
 {
 	if (!active_bullet_list.empty())
 	{
-		for (it = active_bullet_list.begin(); it != active_bullet_list.end(); it++) {
+		for (vector<Bullet*>::iterator it = active_bullet_list.begin(); it != active_bullet_list.end(); it++) {
 			(*it)->draw();
 		}
 	}
@@ -87,7 +87,7 @@ void BulletPool::Update()
 	if (!active_bullet_list.empty())
 	{
 		int i = 0;
-		for (it = active_bullet_list.begin(); it != active_bullet_list.end(); it++, i++) {
+		for (vector<Bullet*>::iterator it = active_bullet_list.begin(); it != active_bullet_list.end(); it++, i++) {
 			(*it)->update();
 
 			if ((*it)->getTransform()->position.y > (Globals::kWindowHeight + (*it)->texture_size.y)) { //out of bound
@@ -102,4 +102,15 @@ void BulletPool::Update()
 
 void BulletPool::Clean()
 {
+	for (auto& i : active_bullet_list) {
+		delete i;
+		i = nullptr;
+	}
+	active_bullet_list.clear();
+
+	for (auto& i : inactive_bullet_list) {
+		delete i;
+		i = nullptr;
+	}
+	inactive_bullet_list.clear();
 }
