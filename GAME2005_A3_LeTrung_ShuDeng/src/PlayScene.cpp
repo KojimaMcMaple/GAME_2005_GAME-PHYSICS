@@ -70,6 +70,9 @@ void PlayScene::update()
 	}	
 
 	updateDisplayList();
+
+	velocity_x_label->setText("Velo X = " + std::to_string(m_pBall->getRigidBody()->velocity.x));
+	velocity_y_label->setText("Velo Y = " + std::to_string(m_pBall->getRigidBody()->velocity.y));
 }
 
 void PlayScene::solveBoundaryCollision()
@@ -222,7 +225,7 @@ void PlayScene::handleEvents()
 
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_1))
 	{
-		TheGame::Instance()->changeSceneState(START_SCENE);
+		TheGame::Instance()->changeSceneState(PLAY_SCENE_01);
 	}
 
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_2))
@@ -254,7 +257,7 @@ void PlayScene::start()
 	m_pBackButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pBackButton->setActive(false);
-		TheGame::Instance()->changeSceneState(START_SCENE);
+		TheGame::Instance()->changeSceneState(PLAY_SCENE_01);
 	});
 
 	m_pBackButton->addEventListener(MOUSE_OVER, [&]()->void
@@ -294,6 +297,23 @@ void PlayScene::start()
 	m_pInstructionsLabel = new Label("Press the backtick (`) character to toggle Debug View", "Consolas", 20, color);
 	m_pInstructionsLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.5f, 500.0f);
 	addChild(m_pInstructionsLabel);
+
+
+	velocity_x_label = new Label("Velo X = ", "Consolas", 20, color);
+	velocity_x_label->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.75f, 75.0f);
+	addChild(velocity_x_label);
+
+	velocity_y_label = new Label("Velo Y = ", "Consolas", 20, color);
+	velocity_y_label->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.75f, 100.0f);
+	addChild(velocity_y_label);
+
+	/*acceleration_x_label = new Label("Acce X = ", "Consolas", 20, color);
+	acceleration_x_label->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.75f, 125.0f);
+	addChild(acceleration_x_label);
+
+	acceleration_y_label = new Label("Acce Y = ", "Consolas", 20, color);
+	acceleration_y_label->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.75f, 150.0f);
+	addChild(acceleration_y_label);*/
 }
 
 void PlayScene::GUI_Function()

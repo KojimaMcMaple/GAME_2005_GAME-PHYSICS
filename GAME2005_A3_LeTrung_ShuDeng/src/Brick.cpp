@@ -4,9 +4,9 @@
 
 Brick::Brick()
 {
-	TextureManager::Instance()->load("../Assets/textures/startButton.png", "wookiee");
+	TextureManager::Instance()->load("../Assets/textures/brick.jpg", "brick");
 
-	const auto size = TextureManager::Instance()->getTextureSize("wookiee");
+	const auto size = TextureManager::Instance()->getTextureSize("brick");
 	setWidth(size.x);
 	setHeight(size.y);
 	getTransform()->position = glm::vec2(50.0f, 400.0f);
@@ -21,7 +21,7 @@ void Brick::draw()
 	const auto x = getTransform()->position.x;
 	const auto y = getTransform()->position.y;
 
-	TextureManager::Instance()->draw("wookiee", x, y, 0, 255, false);
+	TextureManager::Instance()->draw("brick", x, y, 0, 255, false);
 }
 
 void Brick::update()

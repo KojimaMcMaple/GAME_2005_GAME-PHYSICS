@@ -43,6 +43,10 @@ private:
 	Button* m_pBackButton;
 	Button* m_pNextButton;
 	Label* m_pInstructionsLabel;
+	Label* velocity_x_label;
+	Label* velocity_y_label;
+	Label* acceleration_x_label;
+	Label* acceleration_y_label;
 
 	float m_dampingFactorNormal = 0.7f;
 	float m_dampingFactorTangent = 1.0f;
