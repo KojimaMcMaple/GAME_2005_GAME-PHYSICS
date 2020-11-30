@@ -46,12 +46,20 @@ void Bullet::AccelerateYAtRandomSpeed()
 	getRigidBody()->acceleration.y = (rand() % (int)max_acceleration_speed) + (int)acceleration_speed;
 }
 
-void Bullet::SpawnAtRandomX()
+void Bullet::SpawnAtRandomX(int mode = 0)
 {
 	setEnabled(true);
-	int bullet_max_x = (Globals::kWindowWidth - texture_size.x);
+	int bullet_max_x = (Globals::kWindowWidth);
 	SetXPos(rand() % bullet_max_x); //spawn bullet at random x_pos but not outside of screen
-	AccelerateYAtDefaultSpeed();
+	switch (mode) {
+	case 1:
+		AccelerateYAtRandomSpeed();
+		break;
+	default:
+		AccelerateYAtDefaultSpeed();
+		break;
+	}
+	
 }
 
 void Bullet::Reset()

@@ -31,9 +31,6 @@ private:
 	// IMGUI Function
 	void GUI_Function();
 
-	// Lazy implementation of ramp
-	void updateRamp();
-
 	std::string m_guiTitle;
 	
 	glm::vec2 m_mousePosition;
@@ -48,10 +45,8 @@ private:
 	Button* m_pBackButton;
 	Button* m_pNextButton;
 	Label* m_pInstructionsLabel;
-	Label* velocity_x_label;
-	Label* velocity_y_label;
-	Label* acceleration_x_label;
-	Label* acceleration_y_label;
+	Label* no_active_bullet_label;
+	Label* no_inactive_bullet_label;
 
 	// PHYSICS VARS
 	float ramp_height = 100.0f;

@@ -2,6 +2,8 @@
 #include <vector>
 #include "Bullet.h"
 #include "Globals.h"
+#include "CollisionManager.h"
+#include "SoundManager.h"
 using namespace std;
 
 class BulletPool
@@ -19,6 +21,12 @@ public:
 	void Populate();
 	void SpawnBullet();
 	void DespawnBullet(Bullet* bullet_ptr, int bullet_idx);
+	void CheckBulletCollision(GameObject* checking_obj);
+
+	int GetSizeActiveBulletList();
+	int GetSizeInactiveBulletList();
+
+	void SetSpawnMode(int mode);
 
 	void Draw();
 	void Update();
@@ -33,5 +41,7 @@ private:
 	vector<Bullet*> active_bullet_list;
 	vector<Bullet*> inactive_bullet_list;
 	vector<Bullet*>::iterator it;
+
+	int spawn_mode = 0;
 };
 

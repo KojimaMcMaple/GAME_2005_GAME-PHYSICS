@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include "GameObject.h"
+#include "BulletPool.h"
 #include "ship.h"
 #include <GLM/gtx/norm.hpp>
 #include "SoundManager.h"

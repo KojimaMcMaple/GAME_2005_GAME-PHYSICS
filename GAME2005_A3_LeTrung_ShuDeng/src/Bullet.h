@@ -20,8 +20,9 @@ private:
 	~Bullet();
 
 	void SetXPos(int x_pos);
-	void AccelerateY();
-	void SpawnAtRandomX();
+	void AccelerateYAtDefaultSpeed();
+	void AccelerateYAtRandomSpeed();
+	void SpawnAtRandomX(int mode);
 	void Reset();
 
 	// Life Cycle Methods

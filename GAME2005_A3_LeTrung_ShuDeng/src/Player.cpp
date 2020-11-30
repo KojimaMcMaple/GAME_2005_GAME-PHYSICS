@@ -31,6 +31,7 @@ Player::Player(): m_currentAnimationState(PLAYER_IDLE_RIGHT)
 	const auto size = TextureManager::Instance()->getTextureSize("player_ship");
 	setWidth(size.x);
 	setHeight(size.y);
+	texture_size = glm::vec2(size.x, size.y);
 	getTransform()->position = glm::vec2(400.0f, 400.0f);
 	getRigidBody()->velocity = glm::vec2(0, 0);
 	getRigidBody()->isColliding = false;
@@ -107,6 +108,24 @@ void Player::update()
 	glm::vec2 pos = getTransform()->position;
 	pos.x += getRigidBody()->velocity.x * Globals::sDeltaTime;
 	pos.y += getRigidBody()->velocity.y * Globals::sDeltaTime;
+
+	// BOUND CLAMPING
+	if (pos.x < 0) {
+		pos.x = 0;
+		getRigidBody()->velocity.x = 0.0f;
+	}
+	else if (pos.x > Globals::kWindowWidth) {
+		pos.x = Globals::kWindowWidth;
+		getRigidBody()->velocity.x = 0.0f;
+	}
+	if (pos.y < 0) {
+		pos.y = 0;
+		getRigidBody()->velocity.y = 0.0f;
+	}
+	else if (pos.y > Globals::kWindowHeight) {
+		pos.y = Globals::kWindowHeight;
+		getRigidBody()->velocity.y = 0.0f;
+	}
 
 	getTransform()->position = pos;
 

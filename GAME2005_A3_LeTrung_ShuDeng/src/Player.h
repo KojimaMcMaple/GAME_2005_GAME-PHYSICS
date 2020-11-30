@@ -36,6 +36,8 @@ private:
 	const float kAccelerationSpeed = 10.0f;
 	const float kDecelerationSpeed = -25.0f;
 	glm::vec2 move_direction;
+
+	glm::vec2 texture_size;
 };
 
 #endif /* defined (__PLAYER__) */

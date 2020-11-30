@@ -34,27 +34,13 @@ void PlayScene::draw()
 void PlayScene::update()
 {
 	updateDisplayList();
+
+	BulletPool::Instance()->CheckBulletCollision(m_pPlayer);
 	BulletPool::Instance()->Update();
 
-	//velocity_x_label->setText("Velo X = " + std::to_string(m_pProjectile->getRigidBody()->velocity.x));
-	//velocity_y_label->setText("Velo Y = " + std::to_string(m_pProjectile->getRigidBody()->velocity.y));
-	//acceleration_x_label->setText("Acce X = " + std::to_string(m_pProjectile->getRigidBody()->acceleration.x));
-	//acceleration_y_label->setText("Acce Y = " + std::to_string(m_pProjectile->getRigidBody()->acceleration.y));
-
-	//// GROUND TOUCHED
-	//if (m_touchedGround == false && m_pProjectile->getTransform()->position.x > m_points[1].x)
-	//{
-	//	m_touchedGround = true;
-	//	m_pProjectile->getRigidBody()->velocity = glm::vec2(glm::length(m_pProjectile->getRigidBody()->velocity), 0.0f);
-	//	m_pProjectile->getRigidBody()->acceleration = glm::vec2(- 9.8f * friction_coefficient, 0.0f);
-	//	m_pProjectile->getTransform()->position = glm::vec2(m_points[1].x, m_points[1].y - m_pProjectile->getHeight());
-	//}
-
-	//// POINT OF STOPPING
-	//if (m_touchedGround == true && m_pProjectile->getRigidBody()->velocity.x <= 0.0f)
-	//{
-	//	m_pProjectile->stop();
-	//}
+	no_active_bullet_label->setText("Active Bullets = " + std::to_string(BulletPool::Instance()->GetSizeActiveBulletList()));
+	no_inactive_bullet_label->setText("Inactive Bullets = " + std::to_string(BulletPool::Instance()->GetSizeInactiveBulletList()));
+	
 }
 
 void PlayScene::clean()
@@ -184,24 +170,6 @@ void PlayScene::start()
 	
 	// Bullet Pool
 	BulletPool::Instance()->Populate();
-	//bullet = new Bullet();
-	//addChild(bullet);
-
-	//// Target Sprite
-	//m_pTarget = new Target(glm::vec2(target_range + m_pPlayer->getTransform()->position.x, m_pPlayer->getTransform()->position.y));
-	//addChild(m_pTarget);
-
-	//// Ramp
-	//m_points[0].x = m_points[3].x = 150;
-	//m_points[0].y = m_points[3].y = 450;
-	//updateRamp();
-
-	//m_touchedGround = false;
-
-	//// Projectile Sprite
-	//m_pProjectile = new Projectile();	
-	//m_pProjectile->reset(glm::vec2(m_points[0].x, m_points[0].y - ramp_height - m_pProjectile->getHeight()));
-	//addChild(m_pProjectile);	
 
 	// Back Button
 	m_pBackButton = new Button("../Assets/textures/backButton.png", "backButton", BACK_BUTTON);
@@ -250,21 +218,17 @@ void PlayScene::start()
 	m_pInstructionsLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.5f, 500.0f);
 	addChild(m_pInstructionsLabel);
 
-	velocity_x_label = new Label("Velo X = ", "Consolas", 20, color);
-	velocity_x_label->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.75f, 75.0f);
-	addChild(velocity_x_label);
+	no_active_bullet_label = new Label("Active Bullets = ", "Consolas", 20, color);
+	no_active_bullet_label->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.75f, 50.0f);
+	addChild(no_active_bullet_label);
 
-	velocity_y_label = new Label("Velo Y = ", "Consolas", 20, color);
-	velocity_y_label->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.75f, 100.0f);
-	addChild(velocity_y_label);
+	no_inactive_bullet_label = new Label("Inactive Bullets = ", "Consolas", 20, color);
+	no_inactive_bullet_label->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.75f, 75.0f);
+	addChild(no_inactive_bullet_label);
 
-	acceleration_x_label = new Label("Acce X = ", "Consolas", 20, color);
-	acceleration_x_label->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.75f, 125.0f);
-	addChild(acceleration_x_label);
 
-	acceleration_y_label = new Label("Acce Y = ", "Consolas", 20, color);
-	acceleration_y_label->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.75f, 150.0f);
-	addChild(acceleration_y_label);
+	// SOUNDS
+	/*SoundManager::Instance().load("../Assets/audio/laser_hit.wav", "laser_hit", SOUND_SFX);*/
 }
 
 void PlayScene::StartSimulation() 
@@ -299,10 +263,13 @@ void PlayScene::GUI_Function()
 	//	m_touchedGround = false;
 	//}
 
-	if(ImGui::Button("Start Simulation"))
+	if(ImGui::Button("Default Bullet Acceleration"))
 	{
-		std::cout << "Start Simulation Pressed" << std::endl;
-		StartSimulation();
+		BulletPool::Instance()->SetSpawnMode(0);
+	}
+	if(ImGui::Button("Random Bullet Acceleration"))
+	{
+		BulletPool::Instance()->SetSpawnMode(1);
 	}
 
 	ImGui::Separator();
