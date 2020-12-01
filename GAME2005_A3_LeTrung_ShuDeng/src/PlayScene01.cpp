@@ -174,7 +174,7 @@ void PlayScene01::start()
 
 	// Back Button
 	m_pBackButton = new Button("../Assets/textures/backButton.png", "backButton", BACK_BUTTON);
-	m_pBackButton->getTransform()->position = glm::vec2(100.0f, 500.0f);
+	m_pBackButton->getTransform()->position = glm::vec2(100.0f, 450.0f);
 	m_pBackButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pBackButton->setActive(false);
@@ -194,7 +194,7 @@ void PlayScene01::start()
 
 	// Next Button
 	m_pNextButton = new Button("../Assets/textures/nextButton.png", "nextButton", NEXT_BUTTON);
-	m_pNextButton->getTransform()->position = glm::vec2(700.0f, 500.0f);
+	m_pNextButton->getTransform()->position = glm::vec2(700.0f, 450.0f);
 	m_pNextButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pNextButton->setActive(false);
@@ -216,7 +216,7 @@ void PlayScene01::start()
 	// LABELS
 	const SDL_Color color = { 255, 255, 255, 255 };
 	m_pInstructionsLabel = new Label("Press the backtick (`) character to toggle Debug View", "Consolas", 20, color);
-	m_pInstructionsLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.5f, 500.0f);
+	m_pInstructionsLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.5f, 550.0f);
 	addChild(m_pInstructionsLabel);
 
 	no_active_bullet_label = new Label("Active Bullets = ", "Consolas", 20, color);
