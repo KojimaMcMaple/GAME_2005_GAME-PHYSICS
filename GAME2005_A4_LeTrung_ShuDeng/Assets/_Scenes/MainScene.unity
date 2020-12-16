@@ -157,6 +157,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97945c94ef046184abc792ceb6046327, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bullet_go: {fileID: 2898771445226466676, guid: dc05ecf40a596104686052b7abdee0d3, type: 3}
+  pool_size: 10
+  active_bullet_list: []
 --- !u!4 &403008323
 Transform:
   m_ObjectHideFlags: 0
@@ -382,7 +385,7 @@ MonoBehaviour:
   bulletSpawn: {fileID: 681930396}
   bullet: {fileID: 2898771445226466676, guid: dc05ecf40a596104686052b7abdee0d3, type: 3}
   fireRate: 100
-  bulletManager: {fileID: 403008322}
+  bullet_manager_go: {fileID: 403008321}
 --- !u!114 &579578807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1382,6 +1385,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actors: []
+  bullet_manager_go: {fileID: 403008321}
 --- !u!4 &1957707762
 Transform:
   m_ObjectHideFlags: 0

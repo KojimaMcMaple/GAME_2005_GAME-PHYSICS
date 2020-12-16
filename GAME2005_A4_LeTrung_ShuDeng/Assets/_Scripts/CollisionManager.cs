@@ -6,7 +6,7 @@ using UnityEngine;
 public class CollisionManager : MonoBehaviour
 {
     public CubeBehaviour[] actors;
-    public BulletBehaviour[] bullets;
+    public GameObject bullet_manager_go;
 
     // Start is called before the first frame update
     void Start()
@@ -17,15 +17,16 @@ public class CollisionManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        bullets = FindObjectsOfType<BulletBehaviour>();
-        for (int i = 0; i < bullets.Length; i++)
+        if (!bullet_manager_go.GetComponent<BulletManager>().IsActiveListEmpty())
         {
-            for (int j = 0; j < actors.Length; j++)
+            for (int i = 0; i < bullet_manager_go.GetComponent<BulletManager>().active_bullet_list.Count; i++)
             {
-                CheckIntersectSphereAABB(bullets[i], actors[j]);
+                for (int j = 0; j < actors.Length; j++)
+                {
+                    CheckIntersectSphereAABB(bullet_manager_go.GetComponent<BulletManager>().active_bullet_list[i].GetComponent<BulletBehaviour>(), actors[j]);
+                }
             }
         }
-
 
         for (int i = 0; i < actors.Length; i++)
         {
@@ -52,7 +53,10 @@ public class CollisionManager : MonoBehaviour
 
         if (distance < (sphere.radius))
         {
-            sphere.speed = 0.0f;
+            sphere.direction.x = -sphere.direction.x;
+            sphere.direction.y = -sphere.direction.y;
+            sphere.direction.z = -sphere.direction.z;
+            //sphere.directio = Vector3 Reflect(Vector3 inDirection, Vector3 inNormal); 
         }
     }
 
