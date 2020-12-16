@@ -8,7 +8,7 @@ public class PlayerConstraints : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 position = GetComponent<Transform>().position;
+        Vector3 position = transform.position;
         //if (position.x > 10)
         //{
         //    position.x = 10;
@@ -27,6 +27,7 @@ public class PlayerConstraints : MonoBehaviour
         //}
         position.x = Mathf.Max(XMin, Mathf.Min(position.x, XMax));
         position.z = Mathf.Max(ZMin, Mathf.Min(position.z, ZMax));
-        GetComponent<Transform>().position = position;
+        transform.position = position;
+        GetComponent<CharacterController>().center = Vector3.zero;
     }
 }

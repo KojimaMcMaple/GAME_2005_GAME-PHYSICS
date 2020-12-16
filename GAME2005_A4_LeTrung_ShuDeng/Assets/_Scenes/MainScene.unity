@@ -306,7 +306,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 3}
       propertyPath: m_LocalPosition.z
@@ -360,6 +360,10 @@ PrefabInstance:
       propertyPath: m_UseHeadBob
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 3}
 --- !u!1 &579578805 stripped
@@ -381,7 +385,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletSpawn: {fileID: 681930396}
   bullet: {fileID: 2898771445226466676, guid: dc05ecf40a596104686052b7abdee0d3, type: 3}
-  fireRate: 100
+  fireRate: 10
   bulletManager: {fileID: 403008322}
 --- !u!114 &579578807
 MonoBehaviour:
@@ -395,10 +399,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8a532d3ecab4e84396da85e657784f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  XMin: -5
-  XMax: 5
-  ZMin: -5
-  ZMax: 5
+  XMin: -9.5
+  XMax: 9.5
+  ZMin: -9.5
+  ZMax: 9.5
 --- !u!1 &613454532
 GameObject:
   m_ObjectHideFlags: 0
