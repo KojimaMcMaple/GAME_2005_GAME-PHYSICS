@@ -8,10 +8,22 @@ public class BulletBehaviour : MonoBehaviour
     public float speed;
     public Vector3 direction;
     public float range;
+    public List<CubeBehaviour> contacts;
+
+    public Vector3 size;
+    public float radius;
+    private MeshFilter meshFilter;
+    private Bounds bounds;
+   
 
     // Start is called before the first frame update
     void Start()
     {
+        meshFilter = GetComponent<MeshFilter>();
+
+        bounds = meshFilter.mesh.bounds;
+        size = bounds.size;
+        radius = size.x / 2;
     }
 
     // Update is called once per frame

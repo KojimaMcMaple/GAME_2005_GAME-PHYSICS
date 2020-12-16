@@ -6,6 +6,7 @@ using UnityEngine;
 public class CollisionManager : MonoBehaviour
 {
     public CubeBehaviour[] actors;
+    public BulletBehaviour[] bullets;
 
     // Start is called before the first frame update
     void Start()
@@ -16,6 +17,16 @@ public class CollisionManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        bullets = FindObjectsOfType<BulletBehaviour>();
+        for (int i = 0; i < bullets.Length; i++)
+        {
+            for (int j = 0; j < actors.Length; j++)
+            {
+                CheckIntersectSphereAABB(bullets[i], actors[j]);
+            }
+        }
+
+
         for (int i = 0; i < actors.Length; i++)
         {
             for (int j = 0; j < actors.Length; j++)
@@ -25,6 +36,23 @@ public class CollisionManager : MonoBehaviour
                     CheckAABBs(actors[i], actors[j]);
                 }
             }
+        }
+    }
+
+    public static void CheckIntersectSphereAABB(BulletBehaviour sphere, CubeBehaviour box)
+    {
+        var x = Mathf.Max(box.min.x, Mathf.Min(sphere.transform.position.x, box.max.x));
+        var y = Mathf.Max(box.min.y, Mathf.Min(sphere.transform.position.y, box.max.y));
+        var z = Mathf.Max(box.min.z, Mathf.Min(sphere.transform.position.z, box.max.z));
+
+        var distance = Mathf.Sqrt((x - sphere.transform.position.x) * (x - sphere.transform.position.x) +
+            (y - sphere.transform.position.y) * (y - sphere.transform.position.y) +
+            (z - sphere.transform.position.z) * (z - sphere.transform.position.z)
+            );
+
+        if (distance < (sphere.radius))
+        {
+            Debug.Log("Hit");
         }
     }
 
