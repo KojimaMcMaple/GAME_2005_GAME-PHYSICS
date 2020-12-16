@@ -23,7 +23,8 @@ public class BulletBehaviour : MonoBehaviour
 
         bounds = meshFilter.mesh.bounds;
         size = bounds.size;
-        radius = size.x / 2;
+        //radius = GetComponent<MeshRenderer>().bounds.extents.magnitude;        
+        radius = transform.localScale.x/2;
     }
 
     // Update is called once per frame

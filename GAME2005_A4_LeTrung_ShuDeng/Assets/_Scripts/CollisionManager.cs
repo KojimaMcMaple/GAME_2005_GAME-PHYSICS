@@ -52,7 +52,7 @@ public class CollisionManager : MonoBehaviour
 
         if (distance < (sphere.radius))
         {
-            Debug.Log("Hit");
+            sphere.speed = 0.0f;
         }
     }
 
