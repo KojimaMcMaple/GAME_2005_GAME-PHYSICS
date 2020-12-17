@@ -100,6 +100,7 @@ public class CollisionManager : MonoBehaviour
             //sphere.direction.x = -sphere.direction.x;
             //sphere.direction.y = -sphere.direction.y;
             //sphere.direction.z = -sphere.direction.z;
+            sphere.speed -= 1;
             sphere.direction = Vector3.Reflect(sphere.direction, normal_reflect_vector);
         }
     }

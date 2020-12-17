@@ -81,6 +81,10 @@ public class BulletManager : MonoBehaviour
             for (int i = active_bullet_list.Count - 1; i >= 0; i--) //https://stackoverflow.com/questions/1582285/how-to-remove-elements-from-a-generic-list-while-iterating-over-it
             {
                 BulletBehaviour bullet = active_bullet_list[i].GetComponent<BulletBehaviour>();
+                if (bullet.speed <= 0)
+                {
+                    DespawnBullet(i);
+                }
                 if (Vector3.Distance(bullet.transform.position, Vector3.zero) > bullet.range)
                 {
                     DespawnBullet(i);
