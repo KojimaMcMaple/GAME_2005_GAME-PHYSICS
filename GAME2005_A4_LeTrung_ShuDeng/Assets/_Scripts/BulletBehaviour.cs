@@ -30,20 +30,20 @@ public class BulletBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _Move();
-        _CheckBounds();
+        //_Move();
+        //_CheckBounds();
     }
 
-    private void _Move()
-    {
-        transform.position += direction * speed * Time.deltaTime;
-    }
+    //private void _Move()
+    //{
+    //    transform.position += direction * speed * Time.deltaTime;
+    //}
 
-    private void _CheckBounds()
-    {
-        if (Vector3.Distance(transform.position, Vector3.zero) > range)
-        {
-            Destroy(gameObject);
-        }
-    }
+    //private void _CheckBounds()
+    //{
+    //    if (Vector3.Distance(transform.position, Vector3.zero) > range)
+    //    {
+    //        Destroy(gameObject);
+    //    }
+    //}
 }

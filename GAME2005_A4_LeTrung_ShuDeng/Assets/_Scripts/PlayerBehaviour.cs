@@ -9,7 +9,7 @@ public class PlayerBehaviour : MonoBehaviour
     public int fireRate;
 
 
-    public BulletManager bulletManager;
+    public GameObject bullet_manager_go;
 
     void start()
     {
@@ -28,10 +28,12 @@ public class PlayerBehaviour : MonoBehaviour
             // delays firing
             if (Time.frameCount % fireRate == 0)
             {
-                var tempBullet = Instantiate(bullet, bulletSpawn.position, Quaternion.identity);
-                tempBullet.GetComponent<BulletBehaviour>().direction = bulletSpawn.forward;
+                //var tempBullet = Instantiate(bullet, bulletSpawn.position, Quaternion.identity);
+                //tempBullet.GetComponent<BulletBehaviour>().direction = bulletSpawn.forward;
 
-                tempBullet.transform.SetParent(bulletManager.gameObject.transform);
+                //tempBullet.transform.SetParent(bulletManager.gameObject.transform);
+
+                bullet_manager_go.GetComponent<BulletManager>().SpawnBullet(bulletSpawn.position, Quaternion.identity, bulletSpawn.forward);
             }
 
         }
