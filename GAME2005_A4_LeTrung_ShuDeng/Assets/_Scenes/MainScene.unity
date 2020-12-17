@@ -206,6 +206,7 @@ MonoBehaviour:
   size: {x: 0, y: 0, z: 0}
   max: {x: 0, y: 0, z: 0}
   min: {x: 0, y: 0, z: 0}
+  isStatic: 1
   isColliding: 0
   debug: 0
   contacts: []
@@ -306,11 +307,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.544
+      value: -6.45
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 3}
       propertyPath: m_LocalRotation.x
@@ -395,10 +396,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8a532d3ecab4e84396da85e657784f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  XMin: -5
-  XMax: 5
-  ZMin: -5
-  ZMax: 5
+  XMin: -9.5
+  XMax: 9.5
+  ZMin: -9.5
+  ZMax: 9.5
 --- !u!1 &613454532
 GameObject:
   m_ObjectHideFlags: 0
@@ -496,6 +497,7 @@ MonoBehaviour:
   size: {x: 0, y: 0, z: 0}
   max: {x: 0, y: 0, z: 0}
   min: {x: 0, y: 0, z: 0}
+  isStatic: 0
   isColliding: 0
   debug: 0
   contacts: []
@@ -718,6 +720,7 @@ MonoBehaviour:
   size: {x: 0, y: 0, z: 0}
   max: {x: 0, y: 0, z: 0}
   min: {x: 0, y: 0, z: 0}
+  isStatic: 0
   isColliding: 0
   debug: 0
   contacts: []
@@ -1382,6 +1385,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actors: []
+  bullets: []
 --- !u!4 &1957707762
 Transform:
   m_ObjectHideFlags: 0

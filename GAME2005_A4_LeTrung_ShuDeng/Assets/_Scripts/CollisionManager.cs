@@ -26,15 +26,11 @@ public class CollisionManager : MonoBehaviour
             }
         }
 
-
         for (int i = 0; i < actors.Length; i++)
         {
-            for (int j = 0; j < actors.Length; j++)
+            for (int j = i + 1; j < actors.Length; j++)
             {
-                if (i != j)
-                {
-                    CheckAABBs(actors[i], actors[j]);
-                }
+                CheckAABBs(actors[i], actors[j]);
             }
         }
     }
@@ -67,6 +63,10 @@ public class CollisionManager : MonoBehaviour
                 a.contacts.Add(b);
                 a.isColliding = true;
             }
+            if (!a.isStatic)
+            {
+
+            }
         }
         else
         {
@@ -74,8 +74,7 @@ public class CollisionManager : MonoBehaviour
             {
                 a.contacts.Remove(b);
                 a.isColliding = false;
-            }
-           
+            }           
         }
     }
 }
