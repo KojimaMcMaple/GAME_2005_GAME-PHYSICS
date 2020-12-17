@@ -94,6 +94,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb26199208f309242b07df29a9ab821e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 4
+  speed: 5
   direction: {x: 0, y: 0, z: 0}
   range: 20
+  contacts: []
+  size: {x: 0, y: 0, z: 0}
+  radius: 0

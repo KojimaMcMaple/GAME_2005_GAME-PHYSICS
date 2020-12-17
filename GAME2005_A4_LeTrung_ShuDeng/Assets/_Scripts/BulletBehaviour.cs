@@ -5,7 +5,9 @@ using UnityEngine;
 [System.Serializable]
 public class BulletBehaviour : MonoBehaviour
 {
+    public float max_speed = 5;
     public float speed;
+    
     public Vector3 direction;
     public float range;
     public List<CubeBehaviour> contacts;

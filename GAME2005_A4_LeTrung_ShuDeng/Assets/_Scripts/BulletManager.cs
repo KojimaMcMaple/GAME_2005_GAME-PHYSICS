@@ -40,8 +40,13 @@ public class BulletManager : MonoBehaviour
             temp.transform.position = position;
             temp.transform.rotation = rotation;
             temp.GetComponent<BulletBehaviour>().direction = direction;
+            temp.GetComponent<BulletBehaviour>().speed = temp.GetComponent<BulletBehaviour>().max_speed;
             inactive_bullet_list.RemoveAt(last_idx);
             active_bullet_list.Add(temp);
+        }
+        else
+        {
+            Debug.Log("Empty clip!");
         }
     }
 
@@ -74,7 +79,7 @@ public class BulletManager : MonoBehaviour
         }
     }
 
-    private void _CheckBounds()
+    private void _CheckRest()
     {
         if (!IsActiveListEmpty())
         {
@@ -85,6 +90,17 @@ public class BulletManager : MonoBehaviour
                 {
                     DespawnBullet(i);
                 }
+            }
+        }
+    }
+
+    private void _CheckBounds()
+    {
+        if (!IsActiveListEmpty())
+        {
+            for (int i = active_bullet_list.Count - 1; i >= 0; i--) //https://stackoverflow.com/questions/1582285/how-to-remove-elements-from-a-generic-list-while-iterating-over-it
+            {
+                BulletBehaviour bullet = active_bullet_list[i].GetComponent<BulletBehaviour>();
                 if (Vector3.Distance(bullet.transform.position, Vector3.zero) > bullet.range)
                 {
                     DespawnBullet(i);
@@ -97,6 +113,7 @@ public class BulletManager : MonoBehaviour
     void Update()
     {
         _Move();
+        _CheckRest();
         _CheckBounds();
         //for (int i = 0; i < this.gameObject.transform.childCount; i++)
         //{
