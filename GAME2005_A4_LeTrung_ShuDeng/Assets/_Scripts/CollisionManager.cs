@@ -126,12 +126,44 @@ public class CollisionManager : MonoBehaviour
                 //sphere.direction.x = -sphere.direction.x;
                 //sphere.direction.y = -sphere.direction.y;
                 //sphere.direction.z = -sphere.direction.z;
-                sphere.speed -= 2.5f;
-                if (sphere.speed == 0.0f)
+                if (box.isStatic)  // hits with walls, ceiling and ground
                 {
-                    sphere.speed = -0.1f;
+                    // repositioning
+                    sphere.transform.position -= (sphere.direction * sphere.speed) * Time.deltaTime;
+
+                    sphere.speed -= 2.5f;
+                    if (sphere.speed == 0.0f)
+                    {
+                        sphere.speed = -0.1f;
+                    }
+                    sphere.direction = Vector3.Reflect(sphere.direction, normal_reflect_vector);
                 }
-                sphere.direction = Vector3.Reflect(sphere.direction, normal_reflect_vector);
+                else  //hits with cubes or blocks
+                {
+                    // repositioning
+                    sphere.transform.position -= (sphere.direction * sphere.speed) * Time.deltaTime; 
+                    box.transform.position -= box.velocity * Time.deltaTime;
+
+                    Vector3 sphereSpeedNormalDir = Vector3.Project(sphere.direction * sphere.speed, normal_reflect_vector);
+                    Vector3 boxSpeedNormalDir = Vector3.Project(box.velocity, normal_reflect_vector);
+                    Vector3 finalSphereSpeedNormDir = ((sphere.bulletMass - box.cubeMass) * sphereSpeedNormalDir +
+                        2 * box.cubeMass * boxSpeedNormalDir) / (sphere.bulletMass + box.cubeMass);
+                    Vector3 finalBoxSpeedNormDir = ((box.cubeMass - sphere.bulletMass) * boxSpeedNormalDir +
+                        2 * sphere.bulletMass * sphereSpeedNormalDir) / (sphere.bulletMass + box.cubeMass);
+                    for (int i = 0; i < 3; ++i)
+                    {
+                        if (finalSphereSpeedNormDir[i] == 0)
+                        {
+                            finalSphereSpeedNormDir[i] = (sphere.speed * sphere.direction)[i];
+                        }
+                        if (finalBoxSpeedNormDir[i] != 0)
+                        {
+                            box.velocity[i] = finalBoxSpeedNormDir[i];
+                        }
+                    }
+                    sphere.speed = finalSphereSpeedNormDir.magnitude;
+                    sphere.direction = finalSphereSpeedNormDir.normalized;
+                }
             }
         }
         else
@@ -143,34 +175,7 @@ public class CollisionManager : MonoBehaviour
             }
             //sphere.direction.x = -sphere.direction.x;
             //sphere.direction.y = -sphere.direction.y;
-            //sphere.direction.z = -sphere.direction.z;
-            if (box.isStatic)
-            {
-                sphere.speed -= 1;
-                sphere.direction = Vector3.Reflect(sphere.direction, normal_reflect_vector);
-            }
-            else
-            {
-                Vector3 sphereSpeedNormalDir = Vector3.Project(sphere.direction * sphere.speed, normal_reflect_vector);
-                Vector3 boxSpeedNormalDir = Vector3.Project(box.velocity, normal_reflect_vector);
-                Vector3 finalSphereSpeedNormDir = ((sphere.bulletMass - box.cubeMass) * sphereSpeedNormalDir +
-                    2 * box.cubeMass * boxSpeedNormalDir) / (sphere.bulletMass + box.cubeMass);
-                Vector3 finalBoxSpeedNormDir = ((box.cubeMass - sphere.bulletMass) * boxSpeedNormalDir +
-                    2 * sphere.bulletMass * sphereSpeedNormalDir) / (sphere.bulletMass + box.cubeMass);
-                for (int i = 0; i < 3; ++i)
-                {
-                    if (finalSphereSpeedNormDir[i] == 0)
-                    {
-                        finalSphereSpeedNormDir[i] = (sphere.speed * sphere.direction)[i];
-                    }
-                    if (finalBoxSpeedNormDir[i] != 0)
-                    {
-                        box.velocity[i] = finalBoxSpeedNormDir[i];
-                    }
-                }
-                sphere.speed = finalSphereSpeedNormDir.magnitude;
-                sphere.direction = finalSphereSpeedNormDir.normalized;
-            }
+            //sphere.direction.z = -sphere.direction.z;            
         }
     }
 
@@ -185,9 +190,24 @@ public class CollisionManager : MonoBehaviour
                 a.contacts.Add(b);
                 a.isColliding = true;
             }
-            if (!a.isStatic)
+            if (!a.isStatic && !b.isStatic)
             {
+                // repositioning
+                a.transform.position -= a.velocity * Time.deltaTime;
+                b.transform.position -= b.velocity * Time.deltaTime;
 
+                Vector3 normalVector = a.transform.position - b.transform.position;
+
+                Vector3 aVelNormDir = Vector3.Project(a.velocity, normalVector);
+                Vector3 aVelTangDir = a.velocity - aVelNormDir;
+                Vector3 bVelNormDir = Vector3.Project(b.velocity, normalVector);
+                Vector3 bVelTangDir = b.velocity - bVelNormDir;
+                Vector3 aVelAfterColNormDir = ((a.cubeMass - b.cubeMass) * aVelNormDir +
+                    2 * b.cubeMass * bVelNormDir) / (a.cubeMass + b.cubeMass);
+                Vector3 bVelAfterColNormDir = ((b.cubeMass - a.cubeMass) * bVelNormDir +
+                    2 * a.cubeMass * aVelNormDir) / (a.cubeMass + b.cubeMass);
+                a.velocity = aVelTangDir + aVelAfterColNormDir;
+                b.velocity = bVelTangDir + bVelAfterColNormDir;
             }
         }
         else

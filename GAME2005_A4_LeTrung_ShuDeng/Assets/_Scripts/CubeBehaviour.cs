@@ -62,32 +62,32 @@ public class CubeBehaviour : MonoBehaviour
             if (pos.x > 9.5f)
             {
                 pos.x = 9.5f;
-                velocity.x = 0;
+                velocity.x *= -1;
             }
             else if (pos.x < -9.5f)
             {
                 pos.x = -9.5f;
-                velocity.x = 0;
+                velocity.x *= -1;
             }
             if (pos.z > 9.5f)
             {
                 pos.z = 9.5f;
-                velocity.z = 0;
+                velocity.z *= -1;
             }
             else if (pos.z < -9.5f)
             {
                 pos.z = -9.5f;
-                velocity.z = 0;
+                velocity.z *= -1;
             }
             if (pos.y > 4.5f)
             {
                 pos.y = 4.5f;
-                velocity.y = 0;
+                velocity.y *= -1;
             }
             else if (pos.y < 0.55f)
             {
                 pos.y = 0.55f;
-                velocity.y = 0;
+                velocity.y *= -0.5f;
             }
             transform.position = pos;
         }        
