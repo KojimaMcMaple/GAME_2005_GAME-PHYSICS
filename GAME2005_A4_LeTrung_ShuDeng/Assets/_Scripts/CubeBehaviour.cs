@@ -9,7 +9,8 @@ public class CubeBehaviour : MonoBehaviour
 {
     public Vector3 size;
     public Vector3 max, min;
-    public float frictionFactor = 0.2f, cubeMass = 0.1f;
+    public static float frictionFactor = 0.2f;
+    public float cubeMass = 0.1f;
     [HideInInspector]
     public Vector3 velocity, acceleration;
     private Vector3 frictionAcceleration;
