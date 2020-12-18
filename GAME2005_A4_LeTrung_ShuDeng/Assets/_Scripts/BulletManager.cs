@@ -6,47 +6,55 @@ public class BulletManager : MonoBehaviour
 {
     public GameObject bullet_go; //input from Editor
     public int pool_size = 10;
-    public List<GameObject> active_bullet_list;
-    private List<GameObject> inactive_bullet_list;
+    public List<GameObject> bullet_pool;
 
     // Start is called before the first frame update
     void Start()
     {
-        active_bullet_list = new List<GameObject>();
-        inactive_bullet_list = new List<GameObject>();
+        bullet_pool = new List<GameObject>();
         GameObject temp;
 
         for (int i = 0; i < pool_size; i++)
         {
             temp = Instantiate(bullet_go);
+            temp.GetComponent<BulletBehaviour>().bullet_id = i;
             temp.SetActive(false);
-            inactive_bullet_list.Add(temp);
+            bullet_pool.Add(temp);
         }
     }
 
     public bool IsActiveListEmpty()
     {
-        return ((active_bullet_list.Count == 0) ? true : false);
+        return ((bullet_pool.Count == 0) ? true : false);
+    }
+
+    public GameObject GetPooledBullet()
+    {
+        for (int i = 0; i < pool_size; i++)
+        {
+            if (!bullet_pool[i].activeInHierarchy)
+            {
+                Debug.Log(">>>Spawned: " + bullet_pool[i].GetComponent<BulletBehaviour>().bullet_id);
+                return bullet_pool[i];
+            }
+        }
+        return null;
     }
 
     public void SpawnBullet(Vector3 position, Quaternion rotation, Vector3 direction)
     {
-        if (inactive_bullet_list.Count!=0)
+        if (bullet_pool.Count!=0)
         {
             GameObject temp;
-            int last_idx = inactive_bullet_list.Count - 1;
-            temp = inactive_bullet_list[last_idx];
-            temp.SetActive(true);
-            temp.transform.position = position;
-            temp.transform.rotation = rotation;
-            temp.GetComponent<BulletBehaviour>().direction = direction;
-            temp.GetComponent<BulletBehaviour>().speed = temp.GetComponent<BulletBehaviour>().max_speed;
-            inactive_bullet_list.RemoveAt(last_idx);
-            active_bullet_list.Add(temp);
-        }
-        else
-        {
-            Debug.Log("Empty clip!");
+            temp = GetPooledBullet();
+            if(temp!= null)
+            {
+                temp.transform.position = position;
+                temp.transform.rotation = rotation;
+                temp.GetComponent<BulletBehaviour>().direction = direction;
+                temp.GetComponent<BulletBehaviour>().speed = temp.GetComponent<BulletBehaviour>().max_speed;
+                temp.SetActive(true);
+            }
         }
     }
 
@@ -55,10 +63,8 @@ public class BulletManager : MonoBehaviour
         if (!IsActiveListEmpty())
         {
             GameObject temp;
-            temp = active_bullet_list[active_idx];
+            temp = bullet_pool[active_idx];
             temp.SetActive(false);
-            active_bullet_list.RemoveAt(active_idx); //erase the i-th element
-            inactive_bullet_list.Add(temp);
         }
         //for (int i = safePendingList.Count - 1; i >= 0; i--) //https://stackoverflow.com/questions/1582285/how-to-remove-elements-from-a-generic-list-while-iterating-over-it
         //{
@@ -71,10 +77,14 @@ public class BulletManager : MonoBehaviour
     {
         if (!IsActiveListEmpty())
         {
-            for (int i = 0; i < active_bullet_list.Count; i++)
+            for (int i = 0; i < bullet_pool.Count; i++)
             {
-                BulletBehaviour bullet = active_bullet_list[i].GetComponent<BulletBehaviour>();
-                bullet.transform.position += bullet.direction * bullet.speed * Time.deltaTime;
+                if (bullet_pool[i].activeSelf)
+                {
+                    BulletBehaviour bullet = bullet_pool[i].GetComponent<BulletBehaviour>();
+                    bullet.transform.position += bullet.direction * bullet.speed * Time.deltaTime;
+                }
+                
             }
         }
     }
@@ -83,12 +93,15 @@ public class BulletManager : MonoBehaviour
     {
         if (!IsActiveListEmpty())
         {
-            for (int i = active_bullet_list.Count - 1; i >= 0; i--) //https://stackoverflow.com/questions/1582285/how-to-remove-elements-from-a-generic-list-while-iterating-over-it
+            //for (int i = active_bullet_list.Count - 1; i >= 0; i--) //https://stackoverflow.com/questions/1582285/how-to-remove-elements-from-a-generic-list-while-iterating-over-it
+            for (int i = 0; i < bullet_pool.Count; i++)
             {
-                BulletBehaviour bullet = active_bullet_list[i].GetComponent<BulletBehaviour>();
-                if (bullet.speed <= 0)
+                BulletBehaviour bullet = bullet_pool[i].GetComponent<BulletBehaviour>();
+                if (bullet.speed < 0 && bullet_pool[i].activeSelf == true)
                 {
-                    DespawnBullet(i);
+                    bullet.speed = 0.0f;
+                    bullet_pool[i].SetActive(false);
+                    Debug.Log(">>>DESPAWNED: " + bullet.bullet_id);
                 }
             }
         }
@@ -98,12 +111,12 @@ public class BulletManager : MonoBehaviour
     {
         if (!IsActiveListEmpty())
         {
-            for (int i = active_bullet_list.Count - 1; i >= 0; i--) //https://stackoverflow.com/questions/1582285/how-to-remove-elements-from-a-generic-list-while-iterating-over-it
+            for (int i = 0; i < bullet_pool.Count; i++)
             {
-                BulletBehaviour bullet = active_bullet_list[i].GetComponent<BulletBehaviour>();
+                BulletBehaviour bullet = bullet_pool[i].GetComponent<BulletBehaviour>();
                 if (Vector3.Distance(bullet.transform.position, Vector3.zero) > bullet.range)
                 {
-                    DespawnBullet(i);
+                    bullet_pool[i].SetActive(false);
                 }
             }
         }

@@ -16,7 +16,10 @@ public class BulletBehaviour : MonoBehaviour
     public float radius;
     private MeshFilter meshFilter;
     private Bounds bounds;
-   
+
+    public bool is_colliding;
+    //public Vector3
+    public int bullet_id = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -25,8 +28,8 @@ public class BulletBehaviour : MonoBehaviour
 
         bounds = meshFilter.mesh.bounds;
         size = bounds.size;
-        //radius = GetComponent<MeshRenderer>().bounds.extents.magnitude;        
-        radius = transform.localScale.x/2;
+        radius = GetComponent<MeshRenderer>().bounds.extents.magnitude;
+        //radius = transform.localScale.x/2;
     }
 
     // Update is called once per frame

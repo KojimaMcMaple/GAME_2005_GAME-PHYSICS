@@ -158,8 +158,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bullet_go: {fileID: 2898771445226466676, guid: dc05ecf40a596104686052b7abdee0d3, type: 3}
-  pool_size: 50
-  active_bullet_list: []
+  pool_size: 10
+  bullet_pool: []
 --- !u!4 &403008323
 Transform:
   m_ObjectHideFlags: 0
