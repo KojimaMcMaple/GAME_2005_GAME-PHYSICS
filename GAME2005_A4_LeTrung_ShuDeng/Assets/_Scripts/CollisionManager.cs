@@ -97,8 +97,33 @@ public class CollisionManager : MonoBehaviour
             //sphere.direction.x = -sphere.direction.x;
             //sphere.direction.y = -sphere.direction.y;
             //sphere.direction.z = -sphere.direction.z;
-            sphere.speed -= 1;
-            sphere.direction = Vector3.Reflect(sphere.direction, normal_reflect_vector);
+            if (box.isStatic)
+            {
+                sphere.speed -= 1;
+                sphere.direction = Vector3.Reflect(sphere.direction, normal_reflect_vector);
+            }
+            else
+            {
+                Vector3 sphereSpeedNormalDir = Vector3.Project(sphere.direction * sphere.speed, normal_reflect_vector);
+                Vector3 boxSpeedNormalDir = Vector3.Project(box.velocity, normal_reflect_vector);
+                Vector3 finalSphereSpeedNormDir = ((sphere.bulletMass - box.cubeMass) * sphereSpeedNormalDir +
+                    2 * box.cubeMass * boxSpeedNormalDir) / (sphere.bulletMass + box.cubeMass);
+                Vector3 finalBoxSpeedNormDir = ((box.cubeMass - sphere.bulletMass) * boxSpeedNormalDir +
+                    2 * sphere.bulletMass * sphereSpeedNormalDir) / (sphere.bulletMass + box.cubeMass);
+                for (int i = 0; i < 3; ++i)
+                {
+                    if (finalSphereSpeedNormDir[i] == 0)
+                    {
+                        finalSphereSpeedNormDir[i] = (sphere.speed * sphere.direction)[i];
+                    }
+                    if (finalBoxSpeedNormDir[i] != 0)
+                    {
+                        box.velocity[i] = finalBoxSpeedNormDir[i];
+                    }
+                }
+                sphere.speed = finalSphereSpeedNormDir.magnitude;
+                sphere.direction = finalSphereSpeedNormDir.normalized;
+            }
         }
     }
 

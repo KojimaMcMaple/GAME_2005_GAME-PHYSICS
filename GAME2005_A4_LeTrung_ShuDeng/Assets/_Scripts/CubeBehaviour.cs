@@ -9,7 +9,10 @@ public class CubeBehaviour : MonoBehaviour
 {
     public Vector3 size;
     public Vector3 max, min;
-    private Vector3 velocity, acceleration;
+    public float frictionFactor = 0.2f, cubeMass = 0.1f;
+    [HideInInspector]
+    public Vector3 velocity, acceleration;
+    private Vector3 frictionAcceleration;
     public bool isStatic;
     public bool isColliding;
     public bool debug;
@@ -43,40 +46,49 @@ public class CubeBehaviour : MonoBehaviour
         // physics related calculations
         if (!isStatic)
         {
+            Vector3 pos = transform.position;
+            if (Mathf.Abs(pos.y - 0.55f) < 0.001f)
+            {
+                frictionAcceleration = -velocity.normalized * frictionFactor * 10.0f;
+                if (velocity.magnitude - frictionAcceleration.magnitude * Time.deltaTime > 0)
+                {
+                    velocity += frictionAcceleration * Time.deltaTime;
+                }
+            }
+
             velocity += acceleration * Time.deltaTime;
 
-            Vector3 pos = transform.position;
             pos += velocity * Time.deltaTime;
-            //if (pos.x > 9.5f)
-            //{
-            //    pos.x = 9.5f;
-            //    velocity.x = 0;
-            //} 
-            //else if (pos.x < -9.5f)
-            //{
-            //    pos.x = -9.5f;
-            //    velocity.x = 0;
-            //}
-            //if (pos.z > 9.5f)
-            //{
-            //    pos.z = 9.5f;
-            //    velocity.z = 0;
-            //}
-            //else if (pos.z < -9.5f)
-            //{
-            //    pos.z = -9.5f;
-            //    velocity.z = 0;
-            //}
-            //if (pos.y > 4.5f)
-            //{
-            //    pos.y = 4.5f;
-            //    velocity.y = 0;
-            //}
-            //else if (pos.y < 0.55f)
-            //{
-            //    pos.y = 0.55f;
-            //    velocity.y = 0;
-            //}
+            if (pos.x > 9.5f)
+            {
+                pos.x = 9.5f;
+                velocity.x = 0;
+            }
+            else if (pos.x < -9.5f)
+            {
+                pos.x = -9.5f;
+                velocity.x = 0;
+            }
+            if (pos.z > 9.5f)
+            {
+                pos.z = 9.5f;
+                velocity.z = 0;
+            }
+            else if (pos.z < -9.5f)
+            {
+                pos.z = -9.5f;
+                velocity.z = 0;
+            }
+            if (pos.y > 4.5f)
+            {
+                pos.y = 4.5f;
+                velocity.y = 0;
+            }
+            else if (pos.y < 0.55f)
+            {
+                pos.y = 0.55f;
+                velocity.y = 0;
+            }
             transform.position = pos;
         }        
     }

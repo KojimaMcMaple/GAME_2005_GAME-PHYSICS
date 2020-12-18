@@ -1110,6 +1110,7 @@ MonoBehaviour:
   size: {x: 0, y: 0, z: 0}
   max: {x: 0, y: 0, z: 0}
   min: {x: 0, y: 0, z: 0}
+  isStatic: 1
   isColliding: 0
   debug: 0
   contacts: []
@@ -1246,6 +1247,7 @@ MonoBehaviour:
   size: {x: 0, y: 0, z: 0}
   max: {x: 0, y: 0, z: 0}
   min: {x: 0, y: 0, z: 0}
+  isStatic: 1
   isColliding: 0
   debug: 0
   contacts: []
@@ -1283,6 +1285,7 @@ MonoBehaviour:
   size: {x: 0, y: 0, z: 0}
   max: {x: 0, y: 0, z: 0}
   min: {x: 0, y: 0, z: 0}
+  isStatic: 1
   isColliding: 0
   debug: 0
   contacts: []
@@ -1557,6 +1560,7 @@ MonoBehaviour:
   size: {x: 0, y: 0, z: 0}
   max: {x: 0, y: 0, z: 0}
   min: {x: 0, y: 0, z: 0}
+  isStatic: 1
   isColliding: 0
   debug: 0
   contacts: []
@@ -1657,6 +1661,7 @@ MonoBehaviour:
   size: {x: 0, y: 0, z: 0}
   max: {x: 0, y: 0, z: 0}
   min: {x: 0, y: 0, z: 0}
+  isStatic: 1
   isColliding: 0
   debug: 0
   contacts: []

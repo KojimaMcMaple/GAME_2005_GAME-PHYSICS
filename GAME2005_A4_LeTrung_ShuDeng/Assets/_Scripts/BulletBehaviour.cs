@@ -7,6 +7,7 @@ public class BulletBehaviour : MonoBehaviour
 {
     public float max_speed = 5;
     public float speed;
+    public float bulletMass = 1.0f;
     
     public Vector3 direction;
     public float range;
