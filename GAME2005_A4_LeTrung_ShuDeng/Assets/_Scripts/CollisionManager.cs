@@ -19,11 +19,11 @@ public class CollisionManager : MonoBehaviour
     {
         if (!bullet_manager_go.GetComponent<BulletManager>().IsActiveListEmpty())
         {
-            for (int i = 0; i < bullet_manager_go.GetComponent<BulletManager>().active_bullet_list.Count; i++)
+            for (int i = 0; i < bullet_manager_go.GetComponent<BulletManager>().bullet_pool.Count; i++)
             {
                 for (int j = 0; j < actors.Length; j++)
                 {
-                    CheckIntersectSphereAABB(bullet_manager_go.GetComponent<BulletManager>().active_bullet_list[i].GetComponent<BulletBehaviour>(), actors[j]);
+                    CheckIntersectSphereAABB(bullet_manager_go.GetComponent<BulletManager>().bullet_pool[i].GetComponent<BulletBehaviour>(), actors[j]);
                 }
             }
         }
@@ -56,44 +56,91 @@ public class CollisionManager : MonoBehaviour
 
         if (distance < (sphere.radius))
         {
-            if(sphere_x<= box.max.x && sphere_x >= box.min.x)
+            if (!sphere.contacts.Contains(box))
             {
-                if(sphere_y <= box.max.y && sphere_y >= box.min.y)
-                {
-                    if(sphere_z<= box.min.z)// BACK
-                    {
-                        normal_reflect_vector = Vector3.back;
-                    }
-                    else// FRONT
-                    {
-                        normal_reflect_vector = Vector3.forward;
-                    }
-                    
-                }
-                else
-                {
-                    if(sphere_y<= box.min.y)//BOTTOM
-                    {
-                        normal_reflect_vector = Vector3.down;
-                    }
-                    else// TOP
-                    {
-                        normal_reflect_vector = Vector3.up;
-                    }
-                }
-            }
-            else
-            {
-                if (sphere_x <= box.min.x)//RIGHT
-                {
-                    normal_reflect_vector = Vector3.right;
-                }
-                else
-                {
-                    normal_reflect_vector = Vector3.left;
-                }
-            }
+                sphere.contacts.Add(box);
+                sphere.is_colliding = true;
 
+                if (sphere_x <= box.max.x && sphere_x >= box.min.x)
+                {
+                    if (sphere_y <= box.max.y && sphere_y >= box.min.y)
+                    {
+                        if (sphere_z <= box.min.z)// BACK
+                        {
+                            normal_reflect_vector = Vector3.back;
+                            //if(sphere.speed == 5)
+                            //{
+                            //    Debug.Log(">>> BACK!");
+                            //}
+                        }
+                        else// FRONT
+                        {
+                            normal_reflect_vector = Vector3.forward;
+                            //if (sphere.speed == 5)
+                            //{
+                            //    Debug.Log(">>> FRONT!");
+                            //}
+                        }
+
+                    }
+                    else
+                    {
+                        if (sphere_y <= box.min.y)//BOTTOM
+                        {
+                            normal_reflect_vector = Vector3.down;
+                            //if (sphere.speed == 5)
+                            //{
+                            //    Debug.Log(">>> BOTTOM!");
+                            //}
+                        }
+                        else// TOP
+                        {
+                            normal_reflect_vector = Vector3.up;
+                            //if (sphere.speed == 5)
+                            //{
+                            //    Debug.Log(">>> TOP!");
+                            //}
+                        }
+                    }
+                }
+                else
+                {
+                    if (sphere_x <= box.min.x)//RIGHT
+                    {
+                        normal_reflect_vector = Vector3.right;
+                        //if (sphere.speed == 5)
+                        //{
+                        //    Debug.Log(">>> RIGHT!");
+                        //}
+                    }
+                    else// LEFT
+                    {
+                        normal_reflect_vector = Vector3.left;
+                        //if (sphere.speed == 5)
+                        //{
+                        //    Debug.Log(">>> LEFT!");
+                        //}
+                    }
+                }
+
+                //sphere.direction.x = -sphere.direction.x;
+                //sphere.direction.y = -sphere.direction.y;
+                //sphere.direction.z = -sphere.direction.z;
+                sphere.speed -= 2.5f;
+                if (sphere.speed == 0.0f)
+                {
+                    sphere.speed = -0.1f;
+                }
+                sphere.direction = Vector3.Reflect(sphere.direction, normal_reflect_vector);
+            }
+        }
+        else
+        {
+            if (sphere.contacts.Contains(box))
+            {
+                sphere.contacts.Remove(box);
+                sphere.is_colliding = false;
+            }
             //sphere.direction.x = -sphere.direction.x;
             //sphere.direction.y = -sphere.direction.y;
             //sphere.direction.z = -sphere.direction.z;
