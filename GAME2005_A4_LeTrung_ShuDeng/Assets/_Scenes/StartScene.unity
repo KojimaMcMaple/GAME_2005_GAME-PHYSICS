@@ -434,7 +434,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "GAME2005-GAME PHYSICS\nAssignment 4\n\nAuthor: Trung Le (), \n           
+  m_Text: "GAME2005-GAME PHYSICS\nAssignment 4\n\nAuthor: Trung Le (101264698), \n           
     Shu Deng(101260645)"
 --- !u!222 &780010506
 CanvasRenderer:
