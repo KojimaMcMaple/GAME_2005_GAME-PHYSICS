@@ -14,6 +14,7 @@ public class BulletBehaviour : MonoBehaviour
     public Vector3 collisionNormal;
     public float penetration;
 
+    public List<CubeBehaviour> contacts;
     public BulletManager bulletManager;
 
     public Vector3 size;

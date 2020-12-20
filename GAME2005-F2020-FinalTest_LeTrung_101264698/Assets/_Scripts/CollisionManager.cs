@@ -82,34 +82,48 @@ public class CollisionManager : MonoBehaviour
             (s.min.y <= b.max.y && s.max.y >= b.min.y) &&
             (s.min.z <= b.max.z && s.max.z >= b.min.z))
         {
-            // determine the distances between the contact extents
-            float[] distances = {
+            if (!s.contacts.Contains(b))
+            {
+                s.contacts.Add(b);
+                s.isColliding = true;
+
+                // determine the distances between the contact extents
+                float[] distances = {
                 (b.max.x - s.min.x),
                 (s.max.x - b.min.x),
                 (b.max.y - s.min.y),
                 (s.max.y - b.min.y),
                 (b.max.z - s.min.z),
                 (s.max.z - b.min.z)
-            };
+                };
 
-            float penetration = float.MaxValue;
-            Vector3 face = Vector3.zero;
+                float penetration = float.MaxValue;
+                Vector3 face = Vector3.zero;
 
-            // check each face to see if it is the one that connected
-            for (int i = 0; i < 6; i++)
-            {
-                if (distances[i] < penetration)
+                // check each face to see if it is the one that connected
+                for (int i = 0; i < 6; i++)
                 {
-                    // determine the penetration distance
-                    penetration = distances[i];
-                    face = faces[i];
+                    if (distances[i] < penetration)
+                    {
+                        // determine the penetration distance
+                        penetration = distances[i];
+                        face = faces[i];
+                    }
+                    s.penetration = penetration;
+                    s.collisionNormal = face * -1.0f;
+                    //s.isColliding = true;
+
+
+                    Reflect(s);
                 }
-                s.penetration = penetration;
-                s.collisionNormal = face*-1.0f;
-                //s.isColliding = true;
-
-
-                Reflect(s);
+            }
+        }
+        else
+        {
+            if (s.contacts.Contains(b))
+            {
+                s.contacts.Remove(b);
+                s.isColliding = false;
             }
         }
     }
